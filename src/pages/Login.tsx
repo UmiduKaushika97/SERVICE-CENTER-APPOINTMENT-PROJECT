@@ -62,6 +62,7 @@ const Login = () => {
           value={formik.values.username}
           onChange={formik.handleChange}
           placeholder="Enter your username"
+          
         />
         {formik.errors.username && formik.touched.username && (
           <p style={{ color: 'red' }}>{formik.errors.username}</p>

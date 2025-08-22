@@ -1,5 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom'
-import Login from '../pages/Login'
+// import Login from '../pages/Login'
 // import NotFound from '../pages/NotFound'
 import AdminDashboard from '../pages/admin/AdminDashboard'
 // import AddUser from '../pages/admin/AddUser'
@@ -10,16 +10,35 @@ import NotFound from '../pages/NotFound'
 import Adduser from '../pages/admin/Adduser'
 import AdminLayout from '../Layouts/AdminLayout'
 import Addproduct from '../pages/admin/Addproduct'
+import UsersHome from '../pages/user/Home/UsersHome'
+import Login from '../pages/Login'
+import ForgotPassword from '../pages/user/ForgotPassword/ForgotPassword'
+import UserLogin from '../pages/user/UserLogin'
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Login />,
+    // element: <Login />,
+    element: <UsersHome />,
   },
   // {
   //   path: '/admin',
   //   element: <AdminRoute><AdminDashboard /></AdminRoute>,
   // },
+  {
+    path:'/Login',
+    element: <Login />
+  },
+
+  {
+    path:'/UserLogin',
+    element: <UserLogin />
+  },
+
+  {
+    path: '/ForgotPassword',
+    element: <ForgotPassword />
+  },
   {
     path: '/admin',
     element: (
