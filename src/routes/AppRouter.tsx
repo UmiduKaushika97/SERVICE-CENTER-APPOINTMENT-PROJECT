@@ -14,6 +14,7 @@ import UsersHome from '../pages/user/Home/UsersHome'
 import Login from '../pages/Login'
 import ForgotPassword from '../pages/user/ForgotPassword/ForgotPassword'
 import UserLogin from '../pages/user/UserLogin'
+import Appointments from '../pages/user/Appointment/Appointments'
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,12 @@ const router = createBrowserRouter([
     path: '/ForgotPassword',
     element: <ForgotPassword />
   },
+
+  {
+    path: '/Appointment',
+    element: <Appointments />
+  },
+
   {
     path: '/admin',
     element: (

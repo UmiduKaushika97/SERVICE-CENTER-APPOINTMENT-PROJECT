@@ -12,7 +12,7 @@ function App() {
    <>
     <RouterProvider router={router} />
     {/* i added this after beacuse of build file  */}
-     {/* <ToastContainer position="top-right" autoClose={3000} /> */}
+     <ToastContainer position="top-right" autoClose={3000} />
    </>
   )
 }

@@ -1,28 +1,33 @@
-import {auth, db} from "../firebaseConfig";
-import { createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "../firebaseConfig";
+import {
+  createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import type { UserCredential } from "firebase/auth";
-import { collection, 
-  doc, 
-  getDoc, 
-  getDocs, 
-  query, 
-  where, 
-  setDoc, 
-  updateDoc, 
-  deleteDoc  } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  where,
+  setDoc,
+  updateDoc,
+  deleteDoc,
+} from "firebase/firestore";
 
-  export interface UserData {
-    fullName: string,
-    email: string,
-    password: string,
-    userType: 3,
-    status: 1,
-    homeAddress: string,
-    mobile: string,
-    userimage: string,
-    Uid: string,
-  }
-
+export interface UserData {
+  fullName: string;
+  email: string;
+  password: string;
+  userType: 3;
+  status: 1;
+  homeAddress: string;
+  mobile: string;
+  userimage: string;
+  Uid: string;
+}
 
 const usersCollection = collection(db, "USERS");
 
@@ -58,30 +63,42 @@ const usersCollection = collection(db, "USERS");
 // login users
 
 export const loginUser = async (email: string, password: string) => {
-    try{
-        const userDetails = await signInWithEmailAndPassword(auth, email, password);
-        const user = userDetails.user;
+  try {
+    const userDetails = await signInWithEmailAndPassword(auth, email, password);
+    const user = userDetails.user;
 
-        const userDoc = await getDoc(doc(usersCollection, user.uid));
-        if (!userDoc.exists()) {
-            throw new Error("User data not found");
-        }
+    // const userDoc = await getDoc(doc(usersCollection, user.uid));
+    // if (!userDoc.exists()) {
+    //     throw new Error("User data not found");
+    const userDocRef = doc(usersCollection, user.uid);
+    const userDoc = await getDoc(userDocRef);
 
-        return {
-      uid: user.uid,
-      email: user.email,
-      ...userDoc.data(),
-        };
-    }catch (error: unknown) {
+    if (!userDoc.exists()) {
+      return { success: false, message: "User profile not found" };
+    }
+
+    // }
+
+    return {
+      // uid: user.uid,
+      // email: user.email,
+      // ...userDoc.data(),
+      success: true,
+      message: "Login successful!",
+      user: {
+        uid: user.uid,
+        email: user.email,
+        ...userDoc.data(),
+      },
+    };
+  } catch (error: unknown) {
     let message = "Email or password is incorrect";
 
-    // Narrow the unknown type
     if (error instanceof Error) {
-      // Firebase error has `code` property, but TS doesn't know, so we assert
       const err = error as { code?: string; message: string };
       switch (err.code) {
         case "auth/user-not-found":
-         message = "Email or password is incorrect";
+          message = "Email or password is incorrect";
           break;
 
         case "auth/wrong-password":
@@ -91,11 +108,11 @@ export const loginUser = async (email: string, password: string) => {
           message = "Invalid email format";
           break;
         default:
-          message = err.message;
+          message = err.message || message;
       }
     }
 
-    throw new Error(message);
+    return { success: false, message };
   }
 };
 
@@ -113,18 +130,18 @@ export const registerUser = async (data: UserData): Promise<UserCredential> => {
     throw new Error("User already exists");
   }
 
-   const userCredential = await createUserWithEmailAndPassword(
+  const userCredential = await createUserWithEmailAndPassword(
     auth,
     data.email,
     data.password
   );
 
-   // Save extra fields to Firestore
+  // Save extra fields to Firestore
   await setDoc(doc(usersCollection, userCredential.user.uid), {
     fullName: data.fullName,
     email: data.email,
     userType: data.userType, // hardcoded
-    status: data.status,     // hardcoded
+    status: data.status, // hardcoded
     createdAt: new Date(),
     homeAddress: data.homeAddress,
     mobile: data.mobile,
@@ -133,48 +150,51 @@ export const registerUser = async (data: UserData): Promise<UserCredential> => {
     Uid: userCredential.user.uid,
   });
 
-    console.log("service", userCredential, usersCollection);
+  console.log("service", userCredential, usersCollection);
   return userCredential;
-
 };
 
-
 export const resetPassword = async (email: string) => {
-    // if(!email) throw new Error("Email is required");
+  // if(!email) throw new Error("Email is required");
 
-    try {
-            const que = query(usersCollection, where("email", "==", email));
-            const querySnapshot = await getDocs(que);
+  try {
+    const que = query(usersCollection, where("email", "==", email));
+    const querySnapshot = await getDocs(que);
 
-            if (querySnapshot.empty) {
-            return { success: false, message: "User with this email does not exist."};
-            }
+    if (querySnapshot.empty) {
+      return {
+        success: false,
+        message: "User with this email does not exist.",
+      };
+    }
 
-            await sendPasswordResetEmail(auth, email);
-            return { success: true, message: "Password reset email sent successfully!" };
-             } catch (error: unknown) {
-           if (error instanceof Error) {
-            return { success: false, message: error.message};
-            }
-            return { error: false, message: "Something went wrong"};
-            }
-        
-    //     await sendPasswordResetEmail(auth, email);
-    //     return {sucess: true, message: "Password reset email sent!"};
+    await sendPasswordResetEmail(auth, email);
+    return {
+      success: true,
+      message: "Password reset email sent successfully!",
+    };
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return { success: false, message: error.message };
+    }
+    return { error: false, message: "Something went wrong" };
+  }
 
-    // }catch (error:unknown) {
-    //    if (error instanceof Error) {
-    //   // Firebase errors have a 'code' property, so we can safely typecast
-    //   const e = error as { code?: string };
-    //   if (e.code === "auth/user-not-found") {
-    //     throw new Error("You entered wrong email!");
-    //   } else if (e.code === "auth/invalid-email") {
-    //     throw new Error("Invalid email format!");
-    //   } else {
-    //     throw new Error("Something went wrong!");
-    //   }
-    // } else {
-    //   throw new Error("Something went wrong!");
-    // }
-  
+  //     await sendPasswordResetEmail(auth, email);
+  //     return {sucess: true, message: "Password reset email sent!"};
+
+  // }catch (error:unknown) {
+  //    if (error instanceof Error) {
+  //   // Firebase errors have a 'code' property, so we can safely typecast
+  //   const e = error as { code?: string };
+  //   if (e.code === "auth/user-not-found") {
+  //     throw new Error("You entered wrong email!");
+  //   } else if (e.code === "auth/invalid-email") {
+  //     throw new Error("Invalid email format!");
+  //   } else {
+  //     throw new Error("Something went wrong!");
+  //   }
+  // } else {
+  //   throw new Error("Something went wrong!");
+  // }
 };

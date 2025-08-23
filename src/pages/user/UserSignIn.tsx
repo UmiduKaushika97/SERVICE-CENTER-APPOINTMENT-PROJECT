@@ -6,6 +6,7 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { toast, ToastContainer} from 'react-toastify';
 import { loginUser } from '../../services/usersServices';
+import { useState } from 'react';
 
 interface LoginFormValues {
   email: string;
@@ -16,37 +17,76 @@ const UserSignIn = () => {
 
  
   const navigate = useNavigate();
+  // const [formError, setFormError] = useState("");
 
   const initialValues: LoginFormValues = { email: "", password: "" };
 
   const validationSchema = Yup.object({
-    email: Yup.string().email("Invalid email").required("Email is required"),
-    password: Yup.string().min(6, "Minimum 6 characters").required("Password is required"),
+    email: Yup.string().email("Invalid email")
+    .required("Email is required"),
+    password: Yup.string().min(6, "Minimum 6 characters")
+    .required("Password is required"),
   });
 
-const handleSubmit = async (values: LoginFormValues) => {
-    try {
-      const user = await loginUser(values.email, values.password);
-      console.log("Logged in user:", user);
+// const handleSubmit = async (values: LoginFormValues) => {
+//     try {
+//       const user = await loginUser(values.email, values.password);
+//       console.log("Logged in user:", user);
 
       // // save user in localStorage
       // localStorage.setItem("user", JSON.stringify(user));
 
       // success toast
-      toast.success(`Welcome ${user.email}`);
+      // toast.success(`Welcome ${user.email}`);
 
       // redirect after short delay
       // setTimeout(() => 
-        navigate("/Login")
-      // , 3000);
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        toast.error(error.message); // show error toast
-      } else {
-        toast.error("Something went wrong"); // fallback
-      }
-    }
-  };
+  //       navigate("/Login")
+  //     // , 3000);
+  //   } catch (error: unknown) {
+  //     if (error instanceof Error) {
+  //       toast.error(error.message); // show error toast
+  //     } else {
+  //       toast.error("Something went wrong"); // fallback
+  //     }
+  //   }
+  // };
+
+  const handleSubmit = async (values: LoginFormValues) => {
+
+// setFormError(""); // clear old error
+
+//     check if empty
+//     if (!values.email && !values.password) {
+//       setFormError("Please enter email and password");
+//       return;
+//     } else if (!values.email) {
+//       setFormError("Please enter your email");
+//       return;
+//     } else if (!values.password) {
+//       setFormError("Please enter your password");
+//       return;
+//     }
+
+
+
+
+
+
+
+  const res = await loginUser(values.email, values.password);
+
+  if (res.success) {
+    console.log("User logged in:", res.user);
+    toast.success(res.message);
+  //  setTimeout(()=> 
+    navigate("/Login")
+  //  ,2000);
+  } else {
+    toast.error(res.message);
+  }
+};
+
 
 
   return (
@@ -59,6 +99,13 @@ const handleSubmit = async (values: LoginFormValues) => {
             Sign in to your account
           </p>
         </h1>
+
+        {/* 🔴 Show global form error here
+          {formError && (
+            <p className="text-center text-red-500 text-sm font-medium">
+              {formError}
+            </p>
+          )} */}
 
          <Formik
           initialValues={initialValues}
@@ -169,7 +216,7 @@ const handleSubmit = async (values: LoginFormValues) => {
 
       )}
 </Formik>
-<ToastContainer position="top-center" autoClose={3000} />
+<ToastContainer position="top-right" autoClose={3000} />
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-gray-300"></div>
