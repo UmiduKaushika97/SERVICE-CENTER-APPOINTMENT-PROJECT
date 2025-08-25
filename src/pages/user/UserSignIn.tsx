@@ -131,7 +131,7 @@ const UserSignIn = () => {
             <TextInput
               type="email"
               name="email"
-              id="email"
+              // id="email"
               className="bg-[#e8edec] border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-brightColor focus:border-brightColor block w-full pl-10 p-3 transition-all duration-200 shadow-sm"
               placeholder="Email address"
                value={values.email}

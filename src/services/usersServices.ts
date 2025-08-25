@@ -16,6 +16,7 @@ import {
   updateDoc,
   deleteDoc,
 } from "firebase/firestore";
+// import jwt_decode from "jwt-decode";
 
 export interface UserData {
   fullName: string;
@@ -67,6 +68,34 @@ export const loginUser = async (email: string, password: string) => {
     const userDetails = await signInWithEmailAndPassword(auth, email, password);
     const user = userDetails.user;
 
+    //  // Refresh token to include claims
+    // const token = await user.getIdToken(true);
+    // console.log("Claims.....:", token);
+
+    // // Store in localStorage for protected routes
+    // localStorage.setItem("authToken", token);
+
+    // // You can also decode claims if needed
+    // const idTokenResult = await user.getIdTokenResult();
+    // console.log("Claims:", idTokenResult.claims);
+
+
+    // // Refresh ID token to include custom claims
+    // const idToken = await user.getIdToken(true);
+
+    // // Decode token to get userType
+    // const decodedToken = jwt_decode(idToken);
+    // const userType = decodedToken.userType || "userr";
+
+    // // Store token and userType in localStorage
+    // localStorage.setItem("token", idToken);
+    // localStorage.setItem("userType", userType);
+    // localStorage.setItem("uid", user.uid);
+
+
+
+
+
     // const userDoc = await getDoc(doc(usersCollection, user.uid));
     // if (!userDoc.exists()) {
     //     throw new Error("User data not found");
@@ -78,6 +107,21 @@ export const loginUser = async (email: string, password: string) => {
     }
 
     // }
+// ✅ Get Firebase token and custom claims
+    const idTokenResult = await user.getIdTokenResult(true); // refresh token
+    console.log("Claimsnormal:", idTokenResult.claims); // userTypeShows
+
+    const userType = (idTokenResult.claims.userType as string)|| "userqq"; // default to "user"
+    console.log("Claimsnormal12:", userType);
+
+    const idTokenResults = await user.getIdTokenResult();
+    console.log("Claims:", idTokenResults.claims); // userTypeShows
+    // Store token and userType in localStorage
+    // localStorage.setItem("token", idTokenResult.token);
+    // localStorage.setItem("userType", userType);
+    // localStorage.setItem("uid", user.uid);
+
+    
 
     return {
       // uid: user.uid,
@@ -149,6 +193,21 @@ export const registerUser = async (data: UserData): Promise<UserCredential> => {
     password: data.password,
     Uid: userCredential.user.uid,
   });
+
+  await fetch('http://localhost:5000/api/users/setRole', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ uid:userCredential.user.uid, userType: 'userqq' }) // default role
+    });
+
+  // Call backend to set custom claims
+  // await fetch("http://localhost:5000/users/setRole", {
+  //   method: "POST",
+  //   headers: { "Content-Type": "application/json" },
+  //   body: JSON.stringify({ uid: userCredential.user.uid, role: "usersq" }),
+  // });
+
+  // console.log("Registered user:", userCredential.user.uid);
 
   console.log("service", userCredential, usersCollection);
   return userCredential;
