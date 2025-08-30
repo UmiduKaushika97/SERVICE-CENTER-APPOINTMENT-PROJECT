@@ -1,6 +1,6 @@
 import Logo3m from "../../../assets/Logoes/3m.png"
 import castrol from "../../../assets/Logoes/castrol-logo.png"
-import causeway from "../../../assets/Logoes/causeway.png"
+// import causeway from "../../../assets/Logoes/causeway.png"
 import debeer from "../../../assets/Logoes/DeBeer.png"
 import gyeon from "../../../assets/Logoes/Gyeon.png"
 import mobile from "../../../assets/Logoes/Mobile1.png"
@@ -13,7 +13,9 @@ import wilita from "../../../assets/Logoes/Wilita.png"
 import wuerth from "../../../assets/Logoes/wuerth_logo.png"
 import Lukoil from "../../../assets/Logoes/Lukoil.png"
 
-const logos: string[] = [Logo3m, castrol, causeway, debeer, gyeon, mobile , nippon, premier,saas, sikkens, toyota, wilita, wuerth, Lukoil];
+const logos: string[] = [Logo3m, castrol, 
+  // causeway, 
+  debeer, gyeon, mobile , nippon, premier,saas, sikkens, toyota, wilita, wuerth, Lukoil];
 
 const LogoCarousel = () => {
   return (
