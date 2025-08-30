@@ -1,4 +1,4 @@
-import image1 from "../../../assets/images/service1.jpg"
+// import image1 from "../../../assets/images/service1.jpg"
 
 const ImageSlider = () => {
   return (
