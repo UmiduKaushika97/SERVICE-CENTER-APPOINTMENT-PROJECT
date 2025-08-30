@@ -142,8 +142,9 @@ const NavigationBar = () => {
                 BOOK NOW
               </a> */}
 
-<Button type="submit" className='hover:bg-black hover:text-white' width='full'
+<Button type="submit" className='bg-red-600 text-white font-bold px-4 py-2 rounded hover:bg-red-700' width='full'
             label='BOOK NOW'
+            onClick={handleClick}
           />
 
               {/* <Link
