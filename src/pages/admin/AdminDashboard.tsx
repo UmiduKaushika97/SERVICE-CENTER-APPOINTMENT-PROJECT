@@ -1,24 +1,24 @@
 
 // import Adduser from './Adduser'
 
-import { useState } from "react"
-import Sidebar from "../../components/Sidebar/Sidebar";
-import Header from "../../components/Header/Header";
+// import { useState } from "react"
+// import Sidebar from "../../components/Sidebar/Sidebar";
+// import Header from "../../components/Header/Header";
 
 
 
 const AdminDashboard = () => {
-  const [darkMode, setDarkMode] = useState(true);
+  // const [darkMode, setDarkMode] = useState(true);
 
-  const [isOpen, setIsOpen] = useState(true);
+  // const [isOpen, setIsOpen] = useState(true);
 
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-  }
+  // const toggleDarkMode = () => {
+  //   setDarkMode(!darkMode);
+  // }
 
-  const toggleSiderbar = () => {
-    setIsOpen(!isOpen);
-  }
+  // const toggleSiderbar = () => {
+  //   setIsOpen(!isOpen);
+  // }
   return (
     // <div style={{ padding: 20 }}>
     //   <h1>Admin Dashboard</h1>
