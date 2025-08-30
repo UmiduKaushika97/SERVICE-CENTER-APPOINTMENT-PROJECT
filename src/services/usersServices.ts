@@ -13,8 +13,8 @@ import {
   query,
   where,
   setDoc,
-  updateDoc,
-  deleteDoc,
+  // updateDoc,
+  // deleteDoc,
 } from "firebase/firestore";
 // import jwt_decode from "jwt-decode";
 

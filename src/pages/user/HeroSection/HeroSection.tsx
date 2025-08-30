@@ -1,4 +1,3 @@
-import React from 'react'
 import HeroImg from "../../../assets/images/Herogif.gif"
 
 const HeroSection = () => {

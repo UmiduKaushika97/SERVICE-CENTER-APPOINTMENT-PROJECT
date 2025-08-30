@@ -1,4 +1,3 @@
-import React from 'react'
 import Logo3m from "../../../assets/Logoes/3m.png"
 import castrol from "../../../assets/Logoes/castrol-logo.png"
 import causeway from "../../../assets/Logoes/causeway.png"
