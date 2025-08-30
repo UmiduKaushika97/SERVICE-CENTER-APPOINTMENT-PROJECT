@@ -1,8 +1,15 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import Button from "../../../components/Button";
 
 const NavigationBar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate('/Appointment')
+  }
 
   return (
     <>
@@ -62,12 +69,18 @@ const NavigationBar = () => {
 
             {/* Book Now Button (desktop) */}
             <div className="hidden md:block">
-              <a
+              {/* <a
                 href="#"
                 className="bg-red-600 text-white font-bold px-4 py-2 rounded hover:bg-red-700"
               >
                 BOOK NOW
-              </a>
+              </a> */}
+
+              <Button type="submit" className='bg-red-600 text-white font-bold px-4 py-2 rounded hover:bg-red-700' width='full'
+            label='BOOK NOW'
+            onClick={handleClick}
+          />
+
             </div>
 
             {/* Mobile Menu Button */}
@@ -122,12 +135,21 @@ const NavigationBar = () => {
               >
                 CONTACT
               </a>
-              <a
+              {/* <a
                 href="#"
                 className="bg-red-600 text-white font-bold px-4 py-2 rounded hover:bg-red-700 text-center"
               >
                 BOOK NOW
-              </a>
+              </a> */}
+
+<Button type="submit" className='hover:bg-black hover:text-white' width='full'
+            label='BOOK NOW'
+          />
+
+              {/* <Link
+            to="/ForgotPassword"
+            className="text-sm font-medium text-brightColor hover:underline transition-colors"
+            > Forgot Password?</Link> */}
             </div>
           </div>
         )}

@@ -40,6 +40,8 @@ const formik = useFormik({
           placeholder="Enter your username"
         /> */}
         </form>
+
+        <h1 className='mt-20 ms-10'>jhhhhhhhhhhhhhh</h1>
     </div>
   )
 }

@@ -15,6 +15,9 @@ import Login from '../pages/Login'
 import ForgotPassword from '../pages/user/ForgotPassword/ForgotPassword'
 import UserLogin from '../pages/user/UserLogin'
 import Appointments from '../pages/user/Appointment/Appointments'
+import UserRegistration from '../pages/user/UserRegistration'
+import UserSignIn from '../pages/user/UserSignIn'
+import ImageSlider from '../pages/user/Slider/ImageSlider'
 
 const router = createBrowserRouter([
   {
@@ -23,12 +26,17 @@ const router = createBrowserRouter([
     element: <UsersHome />,
   },
   // {
-  //   path: '/admin',
+  //   path: '/admin/dash',
   //   element: <AdminRoute><AdminDashboard /></AdminRoute>,
   // },
   {
     path:'/Login',
     element: <Login />
+  },
+
+  {
+    path:'/Slider',
+    element: <ImageSlider />
   },
 
   {
@@ -57,6 +65,13 @@ const router = createBrowserRouter([
       { path: 'add-product', element: <Addproduct /> }, // /admin/add-product
     ],
   },
+
+
+  {
+    path: '/dashboard',
+    element: <AdminDashboard/>,
+  },
+
   {
     path: '/admin/add-user',
     element: <AdminRoute><Adduser /></AdminRoute>,
