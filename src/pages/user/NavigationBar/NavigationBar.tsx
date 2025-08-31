@@ -2,14 +2,29 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Button from "../../../components/Button";
+import { getAuth } from "firebase/auth";
 
 const NavigationBar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const auth = getAuth();
   const navigate = useNavigate();
+  
 
   const handleClick = () => {
-    navigate('/Appointment')
+  const user = auth.currentUser;
+  if (!user) {
+      // user not logged in -> redirect to login page
+      navigate("/login");
+    } else {
+      // user logged in -> redirect to booking page
+      navigate("/appointment"); 
+
+
+    // navigate('/Appointment')
   }
+}
+
+  
 
   return (
     <>

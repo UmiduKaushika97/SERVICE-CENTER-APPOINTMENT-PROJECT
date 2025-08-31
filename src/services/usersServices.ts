@@ -22,8 +22,8 @@ export interface UserData {
   fullName: string;
   email: string;
   password: string;
-  userType: 3;
-  status: 1;
+  userType: "User";
+  status: "Active";
   homeAddress: string;
   mobile: string;
   userimage: string;
@@ -111,7 +111,7 @@ export const loginUser = async (email: string, password: string) => {
     const idTokenResult = await user.getIdTokenResult(true); // refresh token
     console.log("Claimsnormal:", idTokenResult.claims); // userTypeShows
 
-    const userType = (idTokenResult.claims.userType as string)|| "userqq"; // default to "user"
+    const userType = (idTokenResult.claims.userType as string)|| "User"; // default to "user"
     console.log("Claimsnormal12:", userType);
 
     const idTokenResults = await user.getIdTokenResult();
@@ -197,7 +197,7 @@ export const registerUser = async (data: UserData): Promise<UserCredential> => {
   await fetch('http://localhost:5000/api/users/setRole', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ uid:userCredential.user.uid, userType: 'userqq' }) // default role
+      body: JSON.stringify({ uid:userCredential.user.uid, userType: 'User' }) // default role
     });
 
   // Call backend to set custom claims
