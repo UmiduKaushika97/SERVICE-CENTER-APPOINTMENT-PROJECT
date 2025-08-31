@@ -1,14 +1,36 @@
-import { useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Menu, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Button from "../../../components/Button";
-import { getAuth } from "firebase/auth";
+import { getAuth, onAuthStateChanged, signOut, type User } from "firebase/auth";
+import { FaUserCircle } from "react-icons/fa";
+
+
 
 const NavigationBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const auth = getAuth();
   const navigate = useNavigate();
-  
+
+// profile icon section start
+  const [user, setUser] = useState<User | null>(null); // Firebase user
+  const [profileDropdown, setProfileDropdown] = useState(false);
+
+  // Listen to auth state
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser); // user becomes null when logged out
+    });
+    return () => unsubscribe();
+  }, [auth]);
+
+  const handleLogout = async () => {
+    await signOut(auth);
+    setProfileDropdown(false); // close dropdown
+    // profile icon disappears automatically
+    navigate("/");
+  };
+// profile icone section end
 
   const handleClick = () => {
   const user = auth.currentUser;
@@ -18,12 +40,28 @@ const NavigationBar = () => {
     } else {
       // user logged in -> redirect to booking page
       navigate("/appointment"); 
-
-
     // navigate('/Appointment')
   }
 }
 
+//user ref for Usericon drop down menu
+const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node)
+    ) {
+      setProfileDropdown(false);
+    }
+  };
+
+  document.addEventListener("mousedown", handleClickOutside);
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, []);
   
 
   return (
@@ -95,8 +133,48 @@ const NavigationBar = () => {
             label='BOOK NOW'
             onClick={handleClick}
           />
-
+</div>
+{/* Profile Icon only shows if user logged in */}
+          {user && (
+            <div className="relative" ref={dropdownRef}>
+              <button
+                onClick={() => setProfileDropdown(!profileDropdown)}
+                className="text-3xl text-gray-700 hover:text-red-600 mt-2"
+              >
+                <FaUserCircle />
+                
+              </button>
+              {profileDropdown && (
+                <div className="absolute right-0 mt-2 w-40 bg-white border shadow-lg rounded-md py-2">
+                  <button
+                    className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                    onClick={() => navigate("/profile")}
+                  >
+                    Profile
+                  </button>
+                  <button
+                    className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
             </div>
+          )}
+
+
+
+
+
+
+
+
+
+
+
+
+            
 
             {/* Mobile Menu Button */}
             <div className="md:hidden">
