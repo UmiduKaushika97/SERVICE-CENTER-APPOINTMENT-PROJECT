@@ -14,7 +14,7 @@ const NavigationBar = () => {
   const user = auth.currentUser;
   if (!user) {
       // user not logged in -> redirect to login page
-      navigate("/login");
+      navigate("/UserLogin");
     } else {
       // user logged in -> redirect to booking page
       navigate("/appointment"); 
