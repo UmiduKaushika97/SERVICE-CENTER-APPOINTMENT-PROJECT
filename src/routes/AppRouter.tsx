@@ -18,6 +18,8 @@ import Appointments from '../pages/user/Appointment/Appointments'
 // import UserRegistration from '../pages/user/UserRegistration'
 // import UserSignIn from '../pages/user/UserSignIn'
 import ImageSlider from '../pages/user/Slider/ImageSlider'
+import UserProfile from '../pages/user/UserProfile/UserProfile'
+import UserLayout from '../Layouts/UserLayout'
 
 const router = createBrowserRouter([
   {
@@ -52,6 +54,21 @@ const router = createBrowserRouter([
   {
     path: '/Appointment',
     element: <Appointments />
+  },
+
+  // {
+  //   path: '/UserProfile',
+  //   element: <UserProfile />
+  // },
+
+  {
+    path: '/UserLayout',
+    element: <UserLayout />,
+    children: [
+      {
+        path: "UserProfile", element: <UserProfile/>
+      }
+    ]
   },
 
   {

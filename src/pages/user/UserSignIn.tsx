@@ -80,7 +80,7 @@ const UserSignIn = () => {
     console.log("User logged in:", res.user);
     toast.success(res.message);
   //  setTimeout(()=> 
-    navigate("/Login")
+    navigate("/")
   //  ,2000);
   } else {
     toast.error(res.message);

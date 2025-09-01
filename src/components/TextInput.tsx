@@ -13,9 +13,10 @@ interface TextInputProps {
   touched?: boolean
    required?: boolean
    error?: string
+   disabled?: boolean;
 }
 
-const TextInput: React.FC <TextInputProps> = ({ label, type = 'text', placeholder, value, onChange, onBlur, name, className = '', id = '', error , touched }) => {
+const TextInput: React.FC <TextInputProps> = ({ label, type = 'text', placeholder, value, onChange, onBlur, name, className = '', id = '', error , touched , disabled = false}) => {
 
 
   return (
@@ -29,6 +30,7 @@ const TextInput: React.FC <TextInputProps> = ({ label, type = 'text', placeholde
     value={value}
     onChange={onChange}
     onBlur={onBlur}
+    disabled={disabled}
     className={`border px-3 py-2 rounded ${className} ${error && touched ? "border-red-500" : ""}`}
     required
   />

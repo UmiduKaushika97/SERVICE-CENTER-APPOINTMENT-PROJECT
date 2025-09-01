@@ -61,9 +61,9 @@ const AdminLayout = () => {
     //   This is the Admin Dashboard
     // </div>
     <>
-    <div>
+    {/* <div>
       <Sidebar isOpen={isOpen} toggleSidebar={toggleSiderbar}/>
-    </div>
+    </div> */}
     <div className="flex font-Montserrat bg-white"> 
     <Sidebar isOpen={isOpen} toggleSidebar={toggleSiderbar}/>
 

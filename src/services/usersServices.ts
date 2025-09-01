@@ -13,7 +13,7 @@ import {
   query,
   where,
   setDoc,
-  // updateDoc,
+  updateDoc,
   // deleteDoc,
 } from "firebase/firestore";
 // import jwt_decode from "jwt-decode";
@@ -256,4 +256,25 @@ export const resetPassword = async (email: string) => {
   // } else {
   //   throw new Error("Something went wrong!");
   // }
+};
+
+
+
+// Fetch user details
+export const getUserDetails = async (userId: string) => {
+  const userRef = doc(db, "USERS", userId);
+  const userSnap = await getDoc(userRef);
+
+  if (userSnap.exists()) {
+    return userSnap.data();
+  } else {
+    throw new Error("User not found");
+  }
+};
+
+
+// Update only changed fields
+export const updateUserDetails = async (userId: string, updates: Partial<{email: string; fullName:string; homeAddress: string; mobile: string;}>) => {
+  const userRef = doc(db, "USERS", userId);
+  await updateDoc(userRef, updates);
 };

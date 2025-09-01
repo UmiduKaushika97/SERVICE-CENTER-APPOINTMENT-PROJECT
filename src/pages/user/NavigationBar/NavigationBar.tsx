@@ -145,10 +145,10 @@ const dropdownRef = useRef<HTMLDivElement>(null);
                 
               </button>
               {profileDropdown && (
-                <div className="absolute right-0 mt-2 w-40 bg-white border shadow-lg rounded-md py-2">
+                <div className="absolute right-0 mt-2 w-30 bg-white border shadow-lg rounded-md py-2">
                   <button
                     className="block w-full text-left px-4 py-2 hover:bg-gray-100"
-                    onClick={() => navigate("/profile")}
+                    onClick={() => navigate("/UserLayout")}
                   >
                     Profile
                   </button>
