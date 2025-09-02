@@ -11,16 +11,19 @@ interface TextInputProps {
   className?: string
   id? :string
   touched?: boolean
-   required?: boolean
+  //  required?: boolean
    error?: string
    disabled?: boolean;
+   min?: string;
+   max?: string; 
+   step?: string;
 }
 
-const TextInput: React.FC <TextInputProps> = ({ label, type = 'text', placeholder, value, onChange, onBlur, name, className = '', id = '', error , touched , disabled = false}) => {
+const TextInput: React.FC <TextInputProps> = ({ label, type = 'text', placeholder, value, onChange, onBlur, name, className = '', id = '', error , touched , disabled = false, min, max, step}) => {
 
 
   return (
-    <div className="">
+    <div className="w-full">
   {label && <label className="block mb-1 text-sm font-medium text-gray-700">{label}</label>}
   <input
     id={id}
@@ -31,8 +34,11 @@ const TextInput: React.FC <TextInputProps> = ({ label, type = 'text', placeholde
     onChange={onChange}
     onBlur={onBlur}
     disabled={disabled}
+    min={min}
+    max={max} 
+    step={step}
     className={`border px-3 py-2 rounded ${className} ${error && touched ? "border-red-500" : ""}`}
-    required
+    // required
   />
   {error && touched && (
     <p className='text-red-500 text-xs'>{error}</p>

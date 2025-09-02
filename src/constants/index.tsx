@@ -12,16 +12,17 @@ export const menuItems = [
   {
     icon: FaHome,
     name: "Home",
-    path: "/admin/dashboard"
+    path: "/adminLayout/dashboard"
   },
   {
     icon: FaUser,
     name: "Profile",
-    path: "/admin/add-user"
+    path: "/adminLayout/add-user"
   },
   {
     icon: FaCog,
     name: "Settings",
+    path: "/adminLayout/vehicalType"
   },
   {
     icon: FaEnvelope,

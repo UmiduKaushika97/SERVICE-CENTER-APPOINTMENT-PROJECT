@@ -9,7 +9,7 @@ import AdminRoute from '../components/AdminRoute'
 import NotFound from '../pages/NotFound'
 import Adduser from '../pages/admin/Adduser'
 import AdminLayout from '../Layouts/AdminLayout'
-import Addproduct from '../pages/admin/Addproduct'
+// import Addproduct from '../pages/admin/Addproduct'
 import UsersHome from '../pages/user/Home/UsersHome'
 import Login from '../pages/Login'
 import ForgotPassword from '../pages/user/ForgotPassword/ForgotPassword'
@@ -20,6 +20,7 @@ import Appointments from '../pages/user/Appointment/Appointments'
 import ImageSlider from '../pages/user/Slider/ImageSlider'
 import UserProfile from '../pages/user/UserProfile/UserProfile'
 import UserLayout from '../Layouts/UserLayout'
+import VehicalTypeAdd from '../pages/admin/VehicalTypeAdd/VehicalTypeAdd'
 
 const router = createBrowserRouter([
   {
@@ -71,18 +72,28 @@ const router = createBrowserRouter([
     ]
   },
 
+
   {
-    path: '/admin',
-    element: (
-    <AdminRoute><AdminLayout /></AdminRoute>
-  ),
-  
-  children: [
-      { path: 'dashboard', element: <AdminDashboard /> }, // /admin
-      { path: 'add-user', element: <Adduser /> }, // /admin/add-user
-      { path: 'add-product', element: <Addproduct /> }, // /admin/add-product
-    ],
+    path: '/adminLayout',
+    element: <AdminLayout />,
+    children: [
+      { path: 'dashboard', element: <AdminDashboard /> },
+      { path: 'add-user', element: <Adduser /> },
+      { path: 'vehicalType', element: <VehicalTypeAdd /> },
+    ]
   },
+  // {
+  //   path: '/admin',
+  //   element: (
+  //   <AdminRoute><AdminLayout /></AdminRoute>
+  // ),
+  
+  // children: [
+  //     { path: 'dashboard', element: <AdminDashboard /> }, // /admin
+  //     { path: 'add-user', element: <Adduser /> }, // /admin/add-user
+  //     { path: 'add-product', element: <Addproduct /> }, // /admin/add-product
+  //   ],
+  // },
 
 
   {

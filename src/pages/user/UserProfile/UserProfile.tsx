@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 // import NavigationBar from "../NavigationBar/NavigationBar";
-import { FaSearch } from "react-icons/fa";
+// import { FaSearch } from "react-icons/fa";
 import TextInput from "../../../components/TextInput";
 import Button from "../../../components/Button";
 import { Formik, Form } from "formik";
@@ -8,6 +8,7 @@ import * as Yup from "yup";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getUserDetails, updateUserDetails } from "../../../services/usersServices";
 import { toast } from "react-toastify";
+import UserVehicals from "./UserVehicals";
 
 const UserProfile = () => {
 
@@ -283,7 +284,7 @@ const [userId, setUserId] = useState<string | null>(null);
           </Formik> 
 
         {/* Accounts Card */}
-        <div className="bg-white shadow-md rounded-2xl p-6 relative">
+        {/* <div className="bg-white shadow-md rounded-2xl p-6 relative">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-lg font-semibold">My xPay accounts</h2>
             <FaSearch className="text-gray-500" />
@@ -304,7 +305,8 @@ const [userId, setUserId] = useState<string | null>(null);
               Unblock account
             </button>
           </div>
-        </div>
+        </div> */}
+        <UserVehicals />
 
         {/* Bills Card */}
         {/* <div className="bg-white shadow-md rounded-2xl p-6">
