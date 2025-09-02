@@ -85,7 +85,7 @@ const ForgotPassword = () => {
                 onBlur={handleBlur}
                 error={errors.email}
                 touched={touched.email}
-              required
+              // required
             />
           </div>
 

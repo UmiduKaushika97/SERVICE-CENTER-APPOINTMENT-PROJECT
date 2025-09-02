@@ -150,7 +150,7 @@ const UserRegistration = () => {
                 onBlur={handleBlur}
                 error={errors.fullName}
                 touched={touched.fullName}
-              required
+              // required
               />
             </div>
 
@@ -177,7 +177,7 @@ const UserRegistration = () => {
                 onBlur={handleBlur}
                 error={errors.email}
                 touched={touched.email}
-                required
+                // required
               />
             </div>
 
@@ -209,7 +209,7 @@ const UserRegistration = () => {
                 onBlur={handleBlur}
                 error={errors.password}
                 touched={touched.password}
-                required
+                // required
               />
             </div>
 
@@ -241,7 +241,7 @@ const UserRegistration = () => {
                 onBlur={handleBlur}
                 error={errors.confirmPassword}
                 touched={touched.confirmPassword}
-                required
+                // required
               />
             </div>
           </div>

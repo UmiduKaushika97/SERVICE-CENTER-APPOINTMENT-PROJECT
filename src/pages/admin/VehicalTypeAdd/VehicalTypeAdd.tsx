@@ -1,4 +1,3 @@
-import React from 'react'
 import TextInput from '../../../components/TextInput'
 import Button from '../../../components/Button'
 import * as Yup from "yup";

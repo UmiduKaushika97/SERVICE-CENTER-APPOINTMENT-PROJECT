@@ -139,7 +139,7 @@ const UserSignIn = () => {
                 onBlur={handleBlur}
                 error={errors.email}
                 touched={touched.email}
-              required
+              // required
             />
           </div>
 
@@ -170,7 +170,7 @@ const UserSignIn = () => {
                 onBlur={handleBlur}
                 error={errors.password}
                 touched={touched.password}
-              required
+              // required
             />
           </div>
 
