@@ -7,6 +7,8 @@ import {
   doc,
   updateDoc,
   deleteDoc,
+  query,
+  where,
 } from "firebase/firestore";
 
 export interface Vehicle {
@@ -63,3 +65,29 @@ export const addUserVehicle = async (payload: UserVehiclePayload) => {
     throw error;
   }
 };
+
+
+
+export interface LogUserVehicle {
+  id: string;
+  userId: string;
+  vehicleType: string;
+  vehicleNumber: string;
+  status: string ;
+}
+
+export const getUserVehicles = async (userId: string): Promise<LogUserVehicle[]> => {
+  const q = query(
+    collection(db, "UsersVehicle"),
+    where("userId", "==", userId),
+    // where("vehicleType", "==", vehicleType),
+    where("status", "==", "Active")
+  );
+
+  const querySnapshot = await getDocs(q);
+  return querySnapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  })) as LogUserVehicle[];
+};
+
