@@ -21,6 +21,7 @@ import ImageSlider from '../pages/user/Slider/ImageSlider'
 import UserProfile from '../pages/user/UserProfile/UserProfile'
 import UserLayout from '../Layouts/UserLayout'
 import VehicalTypeAdd from '../pages/admin/VehicalTypeAdd/VehicalTypeAdd'
+import AboutUs from '../pages/user/Aboutus/Aboutus'
 
 const router = createBrowserRouter([
   {
@@ -55,6 +56,11 @@ const router = createBrowserRouter([
   {
     path: '/Appointment',
     element: <Appointments />
+  },
+
+  {
+    path: '/Aboutus',
+    element: <AboutUs />
   },
 
   // {

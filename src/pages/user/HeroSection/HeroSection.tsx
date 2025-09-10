@@ -1,6 +1,16 @@
+import { useNavigate } from "react-router-dom";
 import HeroImg from "../../../assets/images/Herogif.gif"
+import Button from "../../../components/Button"
 
 const HeroSection = () => {
+const navigate = useNavigate();
+
+  const handleClick = () => {
+  // const user = auth.currentUser;
+  // if (!user) {
+      // user not logged in -> redirect to login page
+      navigate("/UserLogin");
+  }
   return (
     // <div className="container font-bold">
     //     <div className="grid grid-cols-1 md:grid-cols-2 min-h-[600px]">
@@ -74,9 +84,15 @@ const HeroSection = () => {
           </p>
 
           <div className="mt-6">
-            <button className="px-6 py-3 bg-gray-900 text-white rounded-md shadow hover:bg-gray-800 transition">
+            {/* <button className="px-6 py-3 bg-gray-900 text-white rounded-md shadow hover:bg-gray-800 transition">
               More News
-            </button>
+            </button> */}
+
+            <Button type="submit" className='bg-red-600 text-white font-bold px-4 py-2 rounded hover:bg-red-700'
+            label='Login'
+            onClick={handleClick}
+          />
+
           </div>
         </div>
 

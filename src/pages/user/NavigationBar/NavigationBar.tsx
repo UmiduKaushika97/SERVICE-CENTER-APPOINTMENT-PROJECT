@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { Menu, X } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "../../../components/Button";
 import { getAuth, onAuthStateChanged, signOut, type User } from "firebase/auth";
 import { FaUserCircle } from "react-icons/fa";
@@ -79,39 +79,43 @@ const dropdownRef = useRef<HTMLDivElement>(null);
 
             {/* Desktop Menu */}
             <div className="hidden md:flex space-x-8">
-              <a href="#" className="text-red-600 font-bold hover:text-red-700">
+              <Link to="/" className="text-black font-semibold hover:text-red-600">
                 HOME
-              </a>
-              <a
-                href="#"
+               </Link>
+              {/* <a
+                href="/Aboutus"
                 className="text-black font-semibold hover:text-red-600"
               >
                 ABOUT US
-              </a>
+              </a> */}
+
+               <Link to="/Aboutus" className="text-black font-semibold hover:text-red-600">
+                ABOUT US
+               </Link>
               <a
                 href="#"
                 className="text-black font-semibold hover:text-red-600"
               >
                 SERVICES
               </a>
-              <a
+              {/* <a
                 href="#"
                 className="text-black font-semibold hover:text-red-600"
               >
                 BRANCHES
-              </a>
-              <a
+              </a> */}
+              {/* <a
                 href="#"
                 className="text-black font-semibold hover:text-red-600"
               >
                 PACKAGES
-              </a>
-              <a
+              </a> */}
+              {/* <a
                 href="#"
                 className="text-black font-semibold hover:text-red-600"
               >
                 NEWS
-              </a>
+              </a> */}
               <a
                 href="#"
                 className="text-black font-semibold hover:text-red-600"
