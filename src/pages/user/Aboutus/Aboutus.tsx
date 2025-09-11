@@ -6,7 +6,7 @@ const AboutUs = () => (
   <div className="bg-gray-50 text-gray-900 font-sans">
     {/* Hero Section */}
     <section className="bg-red-700 text-white py-20 px-6 text-center">
-      <h1 className="text-4xl md:text-5xl font-bold">About Auto Miraj</h1>
+      <h1 className="text-4xl md:text-5xl font-bold">About CARE POINT</h1>
       <p className="mt-4 text-xl md:text-2xl max-w-3xl mx-auto">
         Sri Lanka’s most trusted auto service Center — your one-stop station for total vehicle care.
       </p>
@@ -16,7 +16,7 @@ const AboutUs = () => (
     <section className="py-16 px-6 max-w-4xl mx-auto">
       <h2 className="text-3xl font-semibold text-blue-900">Our Story</h2>
       <p className="mt-4 text-lg leading-relaxed">
-        Established in 200, Auto Miraj was built on the principle of delivering the finest total auto care solutions
+        Established in 200, Care Point was built on the principle of delivering the finest total auto care solutions
         to Sri Lankan vehicle owners. Over the years, we’ve grown into the island’s most comprehensive auto service
         provider, trusted by drivers nationwide.
       </p>
