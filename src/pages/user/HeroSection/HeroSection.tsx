@@ -71,16 +71,17 @@ const navigate = useNavigate();
         {/* Left Content */}
         <div className="text-center lg:text-left">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
-            Unlock a Passion, <br className="hidden sm:block" />
-            Side Hustle, or New <br className="hidden sm:block" />
+            Reliable Service,Trusted <br className="hidden sm:block" />
+            Care – Your One-Stop <br className="hidden sm:block" />
             <span className="text-gray-600 underline decoration-4 decoration-gray-400">
-              Profession
+              Service Center.
             </span>
           </h1>
 
           <p className="mt-6 text-gray-600 max-w-md mx-auto lg:mx-0 text-sm sm:text-base">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-            Dignissimos eligendi mollitia.
+            EASY & CONVENIENT CAR SERVICE IN SRI LANKA<br/>
+           Get an oil change, vehicle wash and grooming, windscreen treatments, wheel alignment, and much more.
+
           </p>
 
           <div className="mt-6">

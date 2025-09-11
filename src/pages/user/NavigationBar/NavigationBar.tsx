@@ -72,7 +72,7 @@ const dropdownRef = useRef<HTMLDivElement>(null);
             {/* Logo */}
             <div className="flex items-center">
               <span className="text-2xl font-bold tracking-wider">
-                AUTO <span className="text-red-600">MiRAJ</span>
+                CARE <span className="text-red-600">POINT</span>
                 <span className="text-red-600">//</span>
               </span>
             </div>

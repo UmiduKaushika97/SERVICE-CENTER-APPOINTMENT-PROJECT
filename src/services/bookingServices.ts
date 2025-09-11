@@ -1,7 +1,7 @@
 import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
 import { db } from "../firebaseConfig"; // your firebase config file
 
-const bookingsCollection = collection(db, "bookings");
+const bookingsCollection = collection(db, "BOOKINGS");
 
 export const getBookedSlots = async (date: string): Promise<string[]> => {
   const q = query(bookingsCollection, where("date", "==", date));
@@ -15,10 +15,24 @@ export const getBookedSlots = async (date: string): Promise<string[]> => {
   return bookedSlots;
 };
 
-export const bookSlot = async (date: string, timeSlot: string) => {
+
+interface AppointmentData {
+  userId: string;
+  email: string;
+  fullName: string;
+  homeAddress: string;
+  mobile: string;
+  mobileOP?: string;
+  vehicleType: string;
+  vehicleNumber: string;
+  bookingDate: string;
+  timeSlot: string;
+  status: string;
+}
+
+export const bookSlot = async (appointment: AppointmentData) => {
   return await addDoc(bookingsCollection, {
-    date,
-    timeSlot,
+    ...appointment,
     createdAt: new Date(),
   });
 };

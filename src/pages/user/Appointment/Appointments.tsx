@@ -31,8 +31,12 @@ interface AppointmentFormValues {
   fullName: string;
   homeAddress: string;
   mobile: string;
+  mobileOP: string;
   vehicleType: string;
   vehicleNumber: string;
+  bookingDate: string;
+  timeSlot: string;
+  status: "Active";
 }
 
 const Appointments = () => {
@@ -49,20 +53,16 @@ const Appointments = () => {
     fullName: "",
     homeAddress: "",
     mobile: "",
+    mobileOP: "",
     vehicleType: "",
     vehicleNumber: "",
+    bookingDate: "",
+    timeSlot: "",
+    status: "Active",
   });
 
-  // const validationSchema = Yup.object({
-  //   email: Yup.string().email("Invalid email").required("Required"),
-  //   fullName: Yup.string().required("Required"),
-  //   homeAddress: Yup.string().required("Required"),
-  //   mobile: Yup.string().required("Required"),
-  //   vehicleType: Yup.string().required("Required"),
-  //   vehicleNumber: Yup.string().required("Required"),
-  // });
-
   const [userId, setUserId] = useState<string | null>(null);
+  console.log("adawdw",userId);
 
   useEffect(() => {
     const auth = getAuth();
@@ -78,22 +78,14 @@ const Appointments = () => {
             fullName: data.fullName || "",
             homeAddress: data.homeAddress || "",
             mobile: data.mobile || "",
+            mobileOP: "",
             vehicleType: "", // add default value
             vehicleNumber: "",
+            bookingDate: "",
+            timeSlot: "",
+            status: "Active",
             //
           });
-
-          // load vehicles
-          // const userVehicles = await getUserVehicles(user.uid);
-          // setVehicles(userVehicles);
-          // console.log("user...........", userVehicles)
-
-          // const types = Array.from(new Set(userVehicles.map((v) => v.vehicleType))).map((type) => ({
-          //   label: type,
-          //   value: type,
-          // }));
-          // setVehicleTypes(types);
-          // over code
 
           // load vehicles
           const userVehicles = await getUserVehicles(user.uid);
@@ -124,21 +116,12 @@ const Appointments = () => {
             isLoading: false,
             autoClose: 2000,
           });
-          //   } finally {
-          //     setLoading(false);
-          //   }
-
-          //   } else {
-          //   setLoading(false);
-          //   }
         }
       }
     });
 
     return () => unsubscribe();
   }, []);
-
-  // const { values, setFieldValue } = useFormikContext<any>();
 
   const {
     values,
@@ -148,18 +131,11 @@ const Appointments = () => {
     setFieldValue,
     // resetForm,
   } = useFormik({
-    initialValues: initialValues,
-
-    // {
-    //   email: "",
-    //   fullName: "",
-    //   homeAddress: "",
-    //   mobile: "",
-    //   vehicleType: "",
-    //   vehicleNumber: "",
-    // },
+    initialValues,
+    enableReinitialize: true,
     onSubmit: (values) => {
       console.log("form values", values);
+      handleBooking();
     },
   });
 
@@ -229,9 +205,35 @@ const Appointments = () => {
 
   const handleBooking = async () => {
     if (!selectedSlot || !selectedDate) return alert("Select date & time slot");
-    await bookSlot(selectedDate, selectedSlot);
-    alert(`Booked ${selectedSlot} on ${selectedDate}`);
+    if (!userId) return alert("User not logged in");
+    // await bookSlot(selectedDate, selectedSlot);
+    // alert(`Booked ${selectedSlot} on ${selectedDate}`);
+    // fetchBookedSlots(selectedDate); // refresh slots
+
+    try {
+    const appointmentData = {
+      userId,
+      email: values.email,
+      fullName: values.fullName,
+      homeAddress: values.homeAddress,
+      mobile: values.mobile,
+      mobileOP: values.mobileOP,
+      vehicleType: values.vehicleType,
+      vehicleNumber: values.vehicleNumber,
+      bookingDate: selectedDate,
+      timeSlot: selectedSlot,
+      status: "Active",
+    };
+
+    await bookSlot(appointmentData);
+
+    toast.success(`Booked ${selectedSlot} on ${selectedDate}`);
     fetchBookedSlots(selectedDate); // refresh slots
+
+    } catch (err) {
+    console.error("Booking failed:", err);
+    toast.error("Failed to book appointment");
+  }
   };
 
   return (
@@ -246,271 +248,218 @@ const Appointments = () => {
 
         {/* Form */}
         <div className="bg-white  rounded-xl p-8 w-full max-w-6xl">
-          <form
-            className="grid grid-cols-1 md:grid-cols-2 gap-6"
-            onSubmit={handleSubmit}
-          >
-            <div className="mt-2">
-              <div className="flex flex-col sm:flex-row gap-2">
-                {/* Email block */}
-                <div className="flex-1">
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Email <span className="text-red-500">*</span>
-                  </label>
-                  <TextInput
-                    type="email"
-                    name="email"
-                    // id="email"
-                    className="bg-[white] border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-brightColor focus:border-brightColor block w-full transition-all duration-200 shadow-sm"
-                    placeholder="Email address"
-                    value={initialValues.email}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    // error={errors.email}
-                    // touched={touched.email}
-                    // required
-                    disabled={true}
-                  />
-                </div>
+          <form className="" onSubmit={handleSubmit}>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              {/* Email block */}
+              <div className="flex-1">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Email <span className="text-red-500">*</span>
+                </label>
+                <TextInput
+                  type="email"
+                  name="email"
+                  // id="email"
+                  className="bg-[white] border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-brightColor focus:border-brightColor block w-full transition-all duration-200 shadow-sm"
+                  placeholder="Email address"
+                  value={values.email}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  // error={errors.email}
+                  // touched={touched.email}
+                  // required
+                  disabled={true}
+                />
+              </div>
 
-                {/* Full Name block */}
-                <div className="flex-1">
-                  <label
-                    htmlFor="fullName"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Full Name <span className="text-red-500">*</span>
-                  </label>
-                  <TextInput
-                    type="email"
-                    name="fullName"
-                    // id="email"
-                    className="bg-[white] border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-brightColor focus:border-brightColor block w-full transition-all duration-200 shadow-sm"
-                    placeholder="Full Name"
-                    value={initialValues.fullName}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    // error={errors.email}
-                    // touched={touched.email}
-                    // required
-                    disabled={true}
-                  />
-                </div>
+              {/* Full Name block */}
+              <div className="flex-1">
+                <label
+                  htmlFor="fullName"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Full Name <span className="text-red-500">*</span>
+                </label>
+                <TextInput
+                  type="email"
+                  name="fullName"
+                  // id="email"
+                  className="bg-[white] border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-brightColor focus:border-brightColor block w-full transition-all duration-200 shadow-sm"
+                  placeholder="Full Name"
+                  value={values.fullName}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  // error={errors.email}
+                  // touched={touched.email}
+                  // required
+                  disabled={true}
+                />
+              </div>
+
+              {/* Email block */}
+              <div className="flex-1">
+                <label
+                  htmlFor="Phone Number"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Phone Number <span className="text-red-500">*</span>
+                </label>
+                <TextInput
+                  type="email"
+                  name="Mobile"
+                  // id="email"
+                  className="bg-[white] border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-brightColor focus:border-brightColor block w-full transition-all duration-200 shadow-sm"
+                  placeholder="Email address"
+                  value={values.mobile}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  // error={errors.mobile}
+                  // touched={touched.mobile}
+                  disabled={true}
+                  // required
+                />
+              </div>
+
+              {/* Full Name block */}
+              <div className="flex-1">
+                <label
+                  htmlFor="Phone Number"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Phone Number (optional)
+                </label>
+                <TextInput
+                  type="text"
+                  name="mobileOptional"
+                  // id="email"
+                  className="bg-[white] border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-brightColor focus:border-brightColor block w-full transition-all duration-200 shadow-sm"
+                  placeholder="Mobile"
+                  //  value={values.email}
+                  //  onChange={handleChange}
+                  //   onBlur={handleBlur}
+                  //   error={errors.email}
+                  //   touched={touched.email}
+                  // required
+                />
+              </div>
+              {/* Email block */}
+              <div className="flex-1">
+                <label
+                  htmlFor="Phone Number"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Vehicle Type <span className="text-red-500">*</span>
+                </label>
+                <DropDown
+                  // type="dropdown"
+                  // name="vehicleType"
+                  options={vehicleTypes}
+                  value={values.vehicleType}
+                  // id="email"
+                  className="bg-[white] border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-brightColor focus:border-brightColor block w-full transition-all duration-200 shadow-sm"
+                  placeholder="Email address"
+                  //  value={values.email}
+                  //  onChange={handleChange}
+                  //   onBlur={handleBlur}
+                  //   error={errors.email}
+                  //   touched={touched.email}
+                  // required
+                  onChange={(value: string) =>
+                    setFieldValue("vehicleType", value)
+                  }
+                  // onBlur={handleBlur}
+                  // error={errors.vehicleType}
+                  // touched={touched.vehicleType}
+                />
+              </div>
+              {/* Full Name block */}
+              <div className="flex-1">
+                <label
+                  htmlFor="Phone Number"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Vehicle Number
+                </label>
+                <DropDown
+                  //  name="vehicleNumber"
+                  options={vehicleNumbers || []}
+                  value={values.vehicleNumber}
+                  onChange={(value: string) =>
+                    setFieldValue("vehicleNumber", value)
+                  }
+                  // onBlur={handleBlur}
+                  // error={errors.vehicleNumber}
+                  // touched={touched.vehicleNumber}
+                />
               </div>
             </div>
 
-            <div className="mt-2">
-              <div className="flex flex-col sm:flex-row gap-2">
-                {/* Email block */}
-                <div className="flex-1">
-                  <label
-                    htmlFor="Phone Number"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Phone Number <span className="text-red-500">*</span>
-                  </label>
-                  <TextInput
-                    type="email"
-                    name="Mobile"
-                    // id="email"
-                    className="bg-[white] border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-brightColor focus:border-brightColor block w-full transition-all duration-200 shadow-sm"
-                    placeholder="Email address"
-                    value={initialValues.mobile}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    // error={errors.mobile}
-                    // touched={touched.mobile}
-                    disabled={true}
-                    // required
-                  />
-                </div>
+            <hr className="col-span-4 border border-gray-100 my-5" />
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              <div className="">
+                <label
+                  htmlFor="Phone Number"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Date <span className="text-red-500">*</span>
+                </label>
+                <TextInput
+                  type="date"
+                  name="Mobile"
+                  // id="email"
+                  className="bg-[white] border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-brightColor focus:border-brightColor block w-full transition-all duration-200 shadow-sm"
+                  placeholder="Email address"
+                  //  value={values.email}
+                  //  onChange={handleChange}
+                  //   onBlur={handleBlur}
+                  //   error={errors.email}
+                  //   touched={touched.email}
+                  // required
 
-                {/* Full Name block */}
-                <div className="flex-1">
-                  <label
-                    htmlFor="Phone Number"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Phone Number (optional)
-                  </label>
-                  <TextInput
-                    type="text"
-                    name="mobileOptional"
-                    // id="email"
-                    className="bg-[white] border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-brightColor focus:border-brightColor block w-full transition-all duration-200 shadow-sm"
-                    placeholder="Mobile"
-                    //  value={values.email}
-                    //  onChange={handleChange}
-                    //   onBlur={handleBlur}
-                    //   error={errors.email}
-                    //   touched={touched.email}
-                    // required
-                  />
-                </div>
+                  min={today}
+                  max={maxDateString}
+                  value={selectedDate}
+                  onChange={(e) => setSelectedDate(e.target.value)}
+                />
               </div>
-            </div>
-
-            <div className="mt-2">
-              <div className="flex flex-col sm:flex-row gap-2">
-                {/* Email block */}
-                <div className="flex-1">
-                  <label
-                    htmlFor="Phone Number"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Vehicle Type <span className="text-red-500">*</span>
-                  </label>
-                  <DropDown
-                    // type="dropdown"
-                    // name="vehicleType"
-                    options={vehicleTypes}
-                    value={values.vehicleType}
-                    // id="email"
-                    className="bg-[white] border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-brightColor focus:border-brightColor block w-full transition-all duration-200 shadow-sm"
-                    placeholder="Email address"
-                    //  value={values.email}
-                    //  onChange={handleChange}
-                    //   onBlur={handleBlur}
-                    //   error={errors.email}
-                    //   touched={touched.email}
-                    // required
-                    onChange={(value: string) =>
-                      setFieldValue("vehicleType", value)
-                    }
-                    // onBlur={handleBlur}
-                    // error={errors.vehicleType}
-                    // touched={touched.vehicleType}
-                  />
-                </div>
-
-                {/* Full Name block */}
-                <div className="flex-1">
-                  <label
-                    htmlFor="Phone Number"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Vehicle Number
-                  </label>
-                  <DropDown
-                    //  name="vehicleNumber"
-                    options={vehicleNumbers || []}
-                    value={values.vehicleNumber}
-                    onChange={(value: string) =>
-                      setFieldValue("vehicleNumber", value)
-                    }
-                    // onBlur={handleBlur}
-                    // error={errors.vehicleNumber}
-                    // touched={touched.vehicleNumber}
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-2">
-              <div className="flex flex-col sm:flex-row gap-2">
-                {/* Email block */}
-                <div className="flex-1">
-                  <label
-                    htmlFor="Phone Number"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Date <span className="text-red-500">*</span>
-                  </label>
-                  <TextInput
-                    type="date"
-                    name="Mobile"
-                    // id="email"
-                    className="bg-[white] border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-brightColor focus:border-brightColor block w-full transition-all duration-200 shadow-sm"
-                    placeholder="Email address"
-                    //  value={values.email}
-                    //  onChange={handleChange}
-                    //   onBlur={handleBlur}
-                    //   error={errors.email}
-                    //   touched={touched.email}
-                    // required
-
-                    min={today}
-                    max={maxDateString}
-                    value={selectedDate}
-                    onChange={(e) => setSelectedDate(e.target.value)}
-                  />
-                </div>
-
-                {/* Full Name block */}
-                <div className="flex-1">
-                  <label className="block text-sm font-medium text-gray-700">
-                    Time Slots <span className="text-red-500">*</span>
-                  </label>
-                  {/* <TextInput
-                          type="time"
-                          name="mobileOptional"
-                          // id="email"
-                          className="bg-[white] border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-brightColor focus:border-brightColor block w-full transition-all duration-200 shadow-sm"
-                          placeholder="Mobile"
-                          //  value={values.email}
-                          //  onChange={handleChange}
-                          //   onBlur={handleBlur}
-                          //   error={errors.email}
-                          //   touched={touched.email}
-                          // required
-                        /> */}
-                  <div className="flex flex-wrap gap-3">
-                    {selectedDate ? (
-                      getBookableSlots(timeSlots, selectedDate).map(
-                        ({ slot, disabled }) => (
-                          <button
-                            key={slot}
-                            disabled={disabled || bookedSlots.includes(slot)}
-                            onClick={() => setSelectedSlot(slot)}
-                            className={`p-2 border rounded w-18 h-10 ${
-                              disabled || bookedSlots.includes(slot)
-                                ? "bg-red-600 cursor-not-allowed"
-                                : selectedSlot === slot
-                                ? "bg-green-600 text-white"
-                                : "bg-white"
-                            }`}
-                          >
-                            {slot}
-                          </button>
-                        )
+              <div className=" md:col-span-3 md:mt-5">
+                <div className="flex flex-wrap gap-3">
+                  {selectedDate && (
+                    getBookableSlots(timeSlots, selectedDate).map(
+                      ({ slot, disabled }) => (
+                        <button
+                          type="button"
+                          key={slot}
+                          disabled={disabled || bookedSlots.includes(slot)}
+                          onClick={() => setSelectedSlot(slot)}
+                          className={`p-2 border rounded w-18 h-10 ${
+                            disabled || bookedSlots.includes(slot)
+                              ? "bg-red-600 cursor-not-allowed"
+                              : selectedSlot === slot
+                              ? "bg-green-600 text-white"
+                              : "bg-white"
+                          }`}
+                        >
+                          {slot}
+                        </button>
                       )
-                    ) : (
-                      <p className="text-gray-500 col-span-3 text-center">
-                        Please select a date to see available time slots
-                      </p>
-                    )}
-                  </div>
+                    )
+                  )
+                  //  : (
+                  //   <p className="text-gray-500 col-span-3 text-center">
+                  //     Please select a date to see available time slots
+                  //   </p>
+                  // )
+                  }
                 </div>
               </div>
             </div>
-
-            {/* Vehicle Type */}
-            {/* <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Vehicle Type
-                    </label>
-                    <input
-                      type="text"
-                      className="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                    />
-                  </div> */}
-
-            {/* Vehicle Number */}
-            {/* <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Vehicle Number
-                    </label>
-                    <input
-                      type="text"
-                      className="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                    />
-                  </div> */}
-
+            <hr className="col-span-4 border border-gray-100 my-5" />
+  
             {/* Services */}
-            <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mt-4">
+            <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mt-4 md:col-span-4">
               {/* Column 1 */}
               <div>
                 <h3 className="font-semibold mb-2">Select services</h3>
@@ -565,11 +514,10 @@ const Appointments = () => {
             </div>
 
             {/* Submit Button */}
-            <div className="md:col-span-2 flex justify-end mt-6">
+            <div className="md:col-span-4 flex justify-end mt-6">
               <button
                 type="submit"
                 // className="px-6 py-2 bg-indigo-600 text-white rounded-md shadow hover:bg-indigo-700 transition"
-                onClick={handleBooking}
                 disabled={!selectedSlot || !selectedDate} // disable if nothing selected
                 className={`p-2 rounded w-full ${
                   !selectedSlot || !selectedDate
