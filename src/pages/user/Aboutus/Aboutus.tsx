@@ -66,7 +66,7 @@ const AboutUs = () => (
             <h3 className="text-2xl font-semibold text-blue-800">Auto Miraj Ramdis</h3>
           </div>
           <div className="md:w-2/3 mt-4 md:mt-0 text-gray-700">
-            Founded in 2019, Ramdis is the innovative hub of the Auto Miraj family—bringing creative automotive ideas
+            Founded in 2019, Ramdis is the innovative hub of the Care Point family—bringing creative automotive ideas
             to life. :contentReference[oaicite:7]
             {/* {index=7} */}
           </div>
@@ -90,7 +90,7 @@ const AboutUs = () => (
     <section className="bg-blue-900 text-white py-16 px-6 text-center">
       <h2 className="text-3xl font-semibold">Our Promise</h2>
       <p className="mt-4 text-lg max-w-3xl mx-auto">
-        At Auto Miraj, we're not just servicing cars — we’re caring for your journey. Trust, quality, and innovation
+        At Care Point, we're not just servicing cars — we’re caring for your journey. Trust, quality, and innovation
         drive us forward.
       </p>
     </section>
