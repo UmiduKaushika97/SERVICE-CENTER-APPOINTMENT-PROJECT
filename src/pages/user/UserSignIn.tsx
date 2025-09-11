@@ -6,18 +6,19 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { toast, ToastContainer} from 'react-toastify';
 import { loginUser } from '../../services/usersServices';
-// import { useState } from 'react';
+
 
 interface LoginFormValues {
   email: string;
   password: string;
 }
 
+
 const UserSignIn = () => {
 
  
   const navigate = useNavigate();
-  // const [formError, setFormError] = useState("");
+  
 
   const initialValues: LoginFormValues = { email: "", password: "" };
 
@@ -28,56 +29,19 @@ const UserSignIn = () => {
     .required("Password is required"),
   });
 
-// const handleSubmit = async (values: LoginFormValues) => {
-//     try {
-//       const user = await loginUser(values.email, values.password);
-//       console.log("Logged in user:", user);
 
-      // // save user in localStorage
-      // localStorage.setItem("user", JSON.stringify(user));
-
-      // success toast
-      // toast.success(`Welcome ${user.email}`);
-
-      // redirect after short delay
-      // setTimeout(() => 
-  //       navigate("/Login")
-  //     // , 3000);
-  //   } catch (error: unknown) {
-  //     if (error instanceof Error) {
-  //       toast.error(error.message); // show error toast
-  //     } else {
-  //       toast.error("Something went wrong"); // fallback
-  //     }
-  //   }
-  // };
-
+   
   const handleSubmit = async (values: LoginFormValues) => {
-
-// setFormError(""); // clear old error
-
-//     check if empty
-//     if (!values.email && !values.password) {
-//       setFormError("Please enter email and password");
-//       return;
-//     } else if (!values.email) {
-//       setFormError("Please enter your email");
-//       return;
-//     } else if (!values.password) {
-//       setFormError("Please enter your password");
-//       return;
-//     }
-
-
-
-
-
-
 
   const res = await loginUser(values.email, values.password);
 
-  if (res.success) {
+  if (res.success && res.user) {
     console.log("User logged in:", res.user);
+
+    
+   
+
+    
     toast.success(res.message);
   //  setTimeout(()=> 
     navigate("/")
