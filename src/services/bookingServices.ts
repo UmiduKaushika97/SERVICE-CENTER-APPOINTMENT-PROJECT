@@ -1,4 +1,5 @@
-import { collection, addDoc, query, where, getDocs, doc, setDoc, orderBy } from "firebase/firestore";
+import { collection, query, where, getDocs, doc, setDoc, orderBy } from "firebase/firestore";
+// addDoc,
 import { db } from "../firebaseConfig"; // your firebase config file
 
 const bookingsCollection = collection(db, "BOOKINGS");
