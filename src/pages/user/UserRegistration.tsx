@@ -9,10 +9,12 @@ import * as Yup from "yup";
 import { registerUser } from '../../services/usersServices';
 import { toast } from "react-toastify";
 import { useState } from 'react';
+import VerificationPopup from '../../components/VerificationPopup';
 
 const UserRegistration = () => {
 
   const [loading, setLoading] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
 
   const initialValues = {
     fullName: "",
@@ -58,6 +60,7 @@ setLoading(true); // start loader
       });
       console.log("From design file", registerUser);
       toast.success("User registered successfully!");
+      setShowPopup(true);
             resetForm();
     }catch (error: unknown){
       // toast.error(error.message || "Failed to register");
@@ -76,6 +79,7 @@ setLoading(true); // start loader
     
   return (
     <>
+    <VerificationPopup isOpen={showPopup} onClose={() => setShowPopup(false)} />
 {/* {loading && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="w-16 h-16 border-4 border-t-4 border-gray-200 border-t-brightColor rounded-full animate-spin"></div>

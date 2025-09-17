@@ -1,6 +1,7 @@
 import { auth, db } from "../firebaseConfig";
 import {
   createUserWithEmailAndPassword,
+  sendEmailVerification,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
 } from "firebase/auth";
@@ -75,6 +76,9 @@ export const loginUser = async (email: string, password: string) => {
       return { success: false, message: "User profile not found" };
     }
 
+  //   if (!userDetails.user.emailVerified) {
+  //   throw new Error("Please verify your email before logging in.");
+  // }
     
 //Get Firebase token and custom claims
     const idTokenResult = await user.getIdTokenResult(true); // refresh token
@@ -143,6 +147,10 @@ export const registerUser = async (data: UserData): Promise<UserCredential> => {
     data.email,
     data.password
   )
+
+  if (userCredential.user) {
+    await sendEmailVerification(userCredential.user);
+  }
 
   // Save extra fields to Firestore
   await setDoc(doc(usersCollection, userCredential.user.uid), {

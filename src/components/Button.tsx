@@ -43,7 +43,7 @@ const Button: React.FC<ButtonProps> = ({ label, onClick, type = 'button', size =
     <button
       type={type}
       onClick={onClick}
-      className={`flex items-center justify-center gap-2 rounded-lg bg-blue-600 text-white ${className}`}
+      className={`flex items-center justify-center gap-2 rounded-lg bg-black text-white ${className}`}
       style={{
         ...sizeStyles[size],
         ...widthStyle,
