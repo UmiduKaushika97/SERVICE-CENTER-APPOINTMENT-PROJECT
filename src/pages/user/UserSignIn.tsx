@@ -6,6 +6,7 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { toast, ToastContainer} from 'react-toastify';
 import { loginUser } from '../../services/usersServices';
+import { useState } from 'react';
 
 
 interface LoginFormValues {
@@ -16,7 +17,8 @@ interface LoginFormValues {
 
 const UserSignIn = () => {
 
- 
+ const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
   
 
@@ -32,7 +34,8 @@ const UserSignIn = () => {
 
    
   const handleSubmit = async (values: LoginFormValues) => {
-
+setLoading(true);
+    try {
   const res = await loginUser(values.email, values.password);
 
   if (res.success && res.user) {
@@ -49,6 +52,11 @@ const UserSignIn = () => {
   } else {
     toast.error(res.message);
   }
+} catch {
+  toast.error("Something went wrong");
+} finally {
+  setLoading(false);
+}
 };
 
 
@@ -174,6 +182,7 @@ const UserSignIn = () => {
 
         <Button type="submit" className='hover:bg-black hover:text-white' width='full'
             label='Sign in'
+            loading={loading}
           />
 
      </Form>

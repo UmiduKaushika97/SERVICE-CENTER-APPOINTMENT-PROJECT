@@ -1,4 +1,6 @@
 import React from 'react'
+import { ClipLoader } from "react-spinners";
+
 
 interface ButtonProps {
   label: string
@@ -8,11 +10,12 @@ interface ButtonProps {
   width?: 'auto' | 'full' | number
   icon?: string
   className?: string
+  loading?: boolean;
   
 }
 
 const Button: React.FC<ButtonProps> = ({ label, onClick, type = 'button', size = 'medium', 
-  width = 'auto', icon, className = '' }) => {
+  width = 'auto', icon, className = '', loading = false }) => {
 
     const sizeStyles: Record<string, React.CSSProperties> = {
     small: {
@@ -52,10 +55,18 @@ const Button: React.FC<ButtonProps> = ({ label, onClick, type = 'button', size =
         cursor: 'pointer',
         
       }}
+       disabled={loading}
       //  className={`px-4 py-2 rounded text-white ${className}`}
     >
-      {icon && <img src={icon} alt="icon" style={{ width: '20px', height: '20px' }} />}
+       {loading ? (
+        <ClipLoader size={18} color="#fff" />
+      ) : (
+        <>
+      {icon && (<img src={icon} alt="icon" style={{ width: '20px', height: '20px' }} />
+      )}
       {label}
+      </>
+      )}
     </button>
   )
 }

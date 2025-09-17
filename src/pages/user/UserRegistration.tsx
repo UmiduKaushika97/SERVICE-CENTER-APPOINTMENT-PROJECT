@@ -8,8 +8,11 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { registerUser } from '../../services/usersServices';
 import { toast } from "react-toastify";
+import { useState } from 'react';
 
 const UserRegistration = () => {
+
+  const [loading, setLoading] = useState(false);
 
   const initialValues = {
     fullName: "",
@@ -38,7 +41,7 @@ const UserRegistration = () => {
   const handleSubmit = async (values: typeof initialValues, {resetForm}: { resetForm: () => void}
 
   ) => {
-
+setLoading(true); // start loader
     try {
       await registerUser({
     fullName: values.fullName,
@@ -65,12 +68,20 @@ const UserRegistration = () => {
     } else {
       toast.error("An unexpected error occurred");
     }
-
+     } finally {
+         setLoading(false);
+      
     }
   }
     
   return (
     <>
+{/* {loading && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="w-16 h-16 border-4 border-t-4 border-gray-200 border-t-brightColor rounded-full animate-spin"></div>
+        </div>
+      )} */}
+
     <div className='w-full bg-white rounded-lg shadow-xl md:mt-0 sm:max-w-md xl:p-0 border-gray-100'>
       <div className='p-6 space-y-6 md:space-y-7 sm:p-8'>
         <h1 className='text-xl font-bold leading-tight tracking-tight text-backgroundColor md:text-2xl text-center'>
@@ -283,6 +294,7 @@ const UserRegistration = () => {
 
           <Button type="submit" className='hover:bg-black hover:text-white' width='full'
            label='Create Account' 
+           loading={loading}
           />
 
         </Form>
