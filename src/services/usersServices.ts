@@ -100,8 +100,10 @@ export const loginUser = async (email: string, password: string) => {
       user: {
         uid: user.uid,
         email: user.email,
+        userType,
         ...userDoc.data(),
       },
+      token: idTokenResult.token,
     };
   } catch (error: unknown) {
     let message = "Email or password is incorrect";

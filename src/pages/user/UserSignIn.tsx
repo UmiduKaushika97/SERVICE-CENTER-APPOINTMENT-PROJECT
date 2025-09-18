@@ -7,6 +7,8 @@ import * as Yup from "yup";
 import { toast, ToastContainer} from 'react-toastify';
 import { loginUser } from '../../services/usersServices';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setCredentials } from '../../store/authSlice';
 
 
 interface LoginFormValues {
@@ -19,6 +21,7 @@ const UserSignIn = () => {
 
  const [loading, setLoading] = useState(false);
 
+ const dispatch = useDispatch();
   const navigate = useNavigate();
   
 
@@ -38,8 +41,19 @@ setLoading(true);
     try {
   const res = await loginUser(values.email, values.password);
 
-  if (res.success && res.user) {
+  if (res.success && res.user && res.token) {
     console.log("User logged in:", res.user);
+
+    dispatch(
+      setCredentials({
+        token: res.token,
+            user: {
+              uid: res.user.uid,
+              email: res.user.email,
+              userType: res.user.userType,
+            }
+      })
+    )
 
     
    
@@ -47,8 +61,14 @@ setLoading(true);
     
     toast.success(res.message);
   //  setTimeout(()=> 
-    navigate("/")
+    // navigate("/")
   //  ,2000);
+if (res.user.userType === "Admin" || res.user.userType === "SuperAdmin") {
+  navigate("/AdminLayout/dashboard")
+}else{
+   navigate("/UserLayout/UserProfile");
+}
+
   } else {
     toast.error(res.message);
   }

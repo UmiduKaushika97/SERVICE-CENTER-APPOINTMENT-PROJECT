@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import Button from "../../../components/Button";
 import { getAuth, onAuthStateChanged, signOut, type User } from "firebase/auth";
 import { FaUserCircle } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { clearCredentials } from "../../../store/authSlice";
 
 
 
@@ -11,6 +13,8 @@ const NavigationBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const auth = getAuth();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
 
 // profile icon section start
   const [user, setUser] = useState<User | null>(null); // Firebase user
@@ -25,10 +29,22 @@ const NavigationBar = () => {
   }, [auth]);
 
   const handleLogout = async () => {
-    await signOut(auth);
-    setProfileDropdown(false); // close dropdown
+    // await signOut(auth);
+    // setProfileDropdown(false); 
+    // close dropdown
     // profile icon disappears automatically
-    navigate("/");
+    // navigate("/");
+    try {
+      await signOut(auth);
+      setProfileDropdown(false); 
+
+      dispatch(clearCredentials());
+
+      // 🔹 Redirect to login page
+      navigate("/"); // or use navigate("/login") if using react-router
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
   };
 // profile icone section end
 
