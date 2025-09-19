@@ -1,21 +1,26 @@
+import Oservice1 from "../../../assets/images/Oservice1.jpg"
+import Oservice2 from "../../../assets/images/Oservice2.jpg"
+import Oservice3 from "../../../assets/images/Oservice3.jpg"
+
+
 const services = [
   {
     title: "Vehicle Repair",
     description:
       "Our experts are skilled to handle any major mechanical repair. We are armed with the best of tools...",
-    img: "https://images.unsplash.com/photo-1587370560942-ad2a04eabb6d", // replace with your image
+    img: Oservice1
   },
   {
     title: "Vehicle Servicing",
     description:
       "Our experts are skilled to handle any major mechanical repair. We are armed with the best of tools...",
-    img: "https://images.unsplash.com/photo-1589739906089-426d4a2162a4", // replace with your image
+    img: Oservice2
   },
   {
     title: "Collision Repair",
     description:
       "We rebuilt your vehicle to the original condition with the cutting edge technology we used in our...",
-    img: "https://images.unsplash.com/photo-1605100804763-247f0b0d1b3a", // replace with your image
+    img: Oservice3
   },
 ];
 

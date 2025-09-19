@@ -104,8 +104,8 @@ const UsersHome = () => {
             the automotive service industry
           </h2>
           <p className="text-gray-600 mt-4 leading-relaxed">
-            Auto Miraj being Sri Lanka’s largest and the best auto service
-            network; has the most diverse service portfolio. Auto Miraj is your
+            Care Point being Sri Lanka’s largest and the best auto service
+            network; has the most diverse service portfolio. Care Point is your
             one stop station for all of your maintenance, repairs, and services.
             <span className="font-semibold">
               {" "}
