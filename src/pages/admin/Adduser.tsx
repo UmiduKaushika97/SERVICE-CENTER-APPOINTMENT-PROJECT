@@ -41,7 +41,7 @@ const formik = useFormik({
         /> */}
         </form>
 
-        <h1 className='mt-20 ms-10'>jhhhhhhhhhhhhhh</h1>
+        <h1 className=''>jhhhhhhhhhhhhhh</h1>
     </div>
   )
 }

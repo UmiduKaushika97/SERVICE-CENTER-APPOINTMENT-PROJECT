@@ -17,7 +17,7 @@ export const menuItems = [
   {
     icon: FaUser,
     name: "Profile",
-    path: "/adminLayout/add-user"
+    path: "/adminLayout/all-users"
   },
   {
     icon: FaCog,

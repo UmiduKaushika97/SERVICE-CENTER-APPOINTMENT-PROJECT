@@ -24,6 +24,7 @@ import VehicalTypeAdd from '../pages/admin/VehicalTypeAdd/VehicalTypeAdd'
 import AboutUs from '../pages/user/Aboutus/Aboutus'
 import ProtectedRoute from './ProtectedRoute'
 import Unauthorized from '../Unauthorized/UnauthorizedPage'
+import Allusers from '../pages/admin/Allusers'
 
 
 const router = createBrowserRouter([
@@ -95,10 +96,14 @@ const router = createBrowserRouter([
     </ProtectedRoute>,
     children: [
       { path: 'dashboard', element: <AdminDashboard /> },
-      { path: 'add-user', element: <Adduser /> },
+      
+      { path: 'all-users', element: <Allusers/> },
       { path: 'vehicalType', element: <VehicalTypeAdd /> },
     ]
   },
+
+  // { path: 'add-user', element: <Adduser /> },
+  
   // {
   //   path: '/admin',
   //   element: (

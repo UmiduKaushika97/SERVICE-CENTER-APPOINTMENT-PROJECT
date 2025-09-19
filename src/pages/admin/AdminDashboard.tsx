@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useBookings } from "../../Hooks/useBookings";
+import { useUsers } from "../../Hooks/useUsers";
 
 // import { useState } from "react"
 // import Sidebar from "../../components/Sidebar/Sidebar";
@@ -22,6 +23,9 @@ const AdminDashboard = () => {
 
 
 const ITEMS_PER_PAGE = 5;
+
+//for user count
+const { data: users = [] } = useUsers();
 
 // export default function BookingsTable() {
   const { data: bookings = [], isLoading } = useBookings();
@@ -78,7 +82,7 @@ const ITEMS_PER_PAGE = 5;
         👤
       </div>
     </div>
-    <p className="text-2xl font-bold mt-3">150</p>
+    <p className="text-2xl font-bold mt-3">150: {users?.length ?? 0}</p>
   </div>
 
   {/* <!-- Card 4 --> */}

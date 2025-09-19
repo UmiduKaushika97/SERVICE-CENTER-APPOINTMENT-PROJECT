@@ -252,3 +252,33 @@ export const updateUserDetails = async (userId: string, updates: Partial<{email:
   const userRef = doc(db, "USERS", userId);
   await updateDoc(userRef, updates);
 };
+
+
+// export type AppointmentWithId = AppointmentData & { id: string };
+
+// export const getAllBookings = async (): Promise<AppointmentWithId[]> => {
+//   const q = query(bookingsCollection, orderBy("createdAt", "desc"));
+//   const querySnapshot = await getDocs(q);
+
+//   return querySnapshot.docs.map(
+//     (doc) => ({ id: doc.id, ...doc.data() } as AppointmentWithId)
+//   );
+// };
+
+export type UserWithId = UserData & { id: string };
+
+export const getAllUsers = async (): Promise<UserWithId[]> => {
+  try {
+    const snapshot = await getDocs(usersCollection);
+
+    const users = snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    } as UserWithId));
+
+    return users;
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    throw error;
+  }
+};
