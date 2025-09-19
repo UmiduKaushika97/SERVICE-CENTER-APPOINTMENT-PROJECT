@@ -109,7 +109,7 @@ const UsersHome = () => {
             one stop station for all of your maintenance, repairs, and services.
             <span className="font-semibold">
               {" "}
-              Auto Miraj Family drives to success based on three main pillars
+              Care Point Family drives to success based on three main pillars
               which are, Promptness, Respect & Oneness.
             </span>
           </p>
