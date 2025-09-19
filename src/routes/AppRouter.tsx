@@ -22,6 +22,8 @@ import UserProfile from '../pages/user/UserProfile/UserProfile'
 import UserLayout from '../Layouts/UserLayout'
 import VehicalTypeAdd from '../pages/admin/VehicalTypeAdd/VehicalTypeAdd'
 import AboutUs from '../pages/user/Aboutus/Aboutus'
+import ProtectedRoute from './ProtectedRoute'
+import Unauthorized from '../Unauthorized/UnauthorizedPage'
 
 const router = createBrowserRouter([
   {
@@ -70,10 +72,14 @@ const router = createBrowserRouter([
 
   {
     path: '/UserLayout',
-    element: <UserLayout />,
+    element: 
+    <ProtectedRoute allowedRoles={["User"]}>
+    <UserLayout />
+    </ProtectedRoute>,
     children: [
       {
         path: "UserProfile", element: <UserProfile/>
+        
       }
     ]
   },
@@ -81,7 +87,11 @@ const router = createBrowserRouter([
 
   {
     path: '/adminLayout',
-    element: <AdminLayout />,
+
+    element: 
+     <ProtectedRoute allowedRoles={["Admin", "SuperAdmin"]}>
+    <AdminLayout />
+    </ProtectedRoute>,
     children: [
       { path: 'dashboard', element: <AdminDashboard /> },
       { path: 'add-user', element: <Adduser /> },
@@ -111,6 +121,7 @@ const router = createBrowserRouter([
     path: '/admin/add-user',
     element: <AdminRoute><Adduser /></AdminRoute>,
   },
+
 //   {
 //     path: '/admin/add-product',
 //     element: <AdminRoute><AddProduct /></AdminRoute>,
@@ -122,6 +133,11 @@ const router = createBrowserRouter([
   {
     path: '*',
     element: <NotFound />,
+  },
+
+    {
+    path: '/unauthorized',
+    element: <Unauthorized />,
   },
 ])
 

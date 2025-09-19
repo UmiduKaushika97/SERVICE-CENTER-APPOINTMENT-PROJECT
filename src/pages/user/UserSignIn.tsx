@@ -7,8 +7,9 @@ import * as Yup from "yup";
 import { toast, ToastContainer} from 'react-toastify';
 import { loginUser } from '../../services/usersServices';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { setCredentials } from '../../store/authSlice';
+// import { useDispatch } from 'react-redux';
+// import { setCredentials } from '../../store/authSlice';
+// import { getStoredUser } from '../../routes/authHelper';
 
 
 interface LoginFormValues {
@@ -21,7 +22,7 @@ const UserSignIn = () => {
 
  const [loading, setLoading] = useState(false);
 
- const dispatch = useDispatch();
+//  const dispatch = useDispatch();
   const navigate = useNavigate();
   
 
@@ -33,8 +34,6 @@ const UserSignIn = () => {
     password: Yup.string().min(6, "Minimum 6 characters")
     .required("Password is required"),
   });
-
-
    
   const handleSubmit = async (values: LoginFormValues) => {
 setLoading(true);
@@ -44,16 +43,27 @@ setLoading(true);
   if (res.success && res.user && res.token) {
     console.log("User logged in:", res.user);
 
-    dispatch(
-      setCredentials({
-        token: res.token,
-            user: {
-              uid: res.user.uid,
-              email: res.user.email,
-              userType: res.user.userType,
-            }
-      })
-    )
+
+    localStorage.setItem(
+          "authUser",
+          JSON.stringify({
+            token: res.token,
+            uid: res.user.uid,
+            email: res.user.email,
+            userType: res.user.userType,
+          })
+        );
+
+    // dispatch(
+    //   setCredentials({
+    //     token: res.token,
+    //         user: {
+    //           uid: res.user.uid,
+    //           email: res.user.email,
+    //           userType: res.user.userType,
+    //         }
+    //   })
+    // )
 
     
    
@@ -63,11 +73,20 @@ setLoading(true);
   //  setTimeout(()=> 
     // navigate("/")
   //  ,2000);
-if (res.user.userType === "Admin" || res.user.userType === "SuperAdmin") {
-  navigate("/AdminLayout/dashboard")
-}else{
-   navigate("/UserLayout/UserProfile");
-}
+// if (res.user.userType === "Admin" || res.user.userType === "SuperAdmin") {
+//   navigate("/AdminLayout/dashboard")
+// }else{
+//    navigate("/UserLayout/UserProfile");
+// }
+// ✅ Check localStorage right here
+      const storedUser = JSON.parse(localStorage.getItem("authUser") || "{}");
+
+      if (storedUser.userType === "Admin" || storedUser.userType === "SuperAdmin") {
+        navigate("/AdminLayout/dashboard");
+      } else {
+        navigate("/UserLayout/UserProfile");
+      }
+
 
   } else {
     toast.error(res.message);
