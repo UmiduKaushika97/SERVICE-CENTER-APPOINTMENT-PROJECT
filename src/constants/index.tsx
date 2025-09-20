@@ -27,6 +27,7 @@ export const menuItems = [
   {
     icon: FaEnvelope,
     name: "Messages",
+    path: "/adminLayout/today-booking"
   },
   {
     icon: FaChartLine,

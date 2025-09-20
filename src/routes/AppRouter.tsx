@@ -25,6 +25,7 @@ import AboutUs from '../pages/user/Aboutus/Aboutus'
 import ProtectedRoute from './ProtectedRoute'
 import Unauthorized from '../Unauthorized/UnauthorizedPage'
 import Allusers from '../pages/admin/Allusers'
+import TodayBookings from '../pages/admin/TodayBookings'
 
 
 const router = createBrowserRouter([
@@ -99,6 +100,7 @@ const router = createBrowserRouter([
       
       { path: 'all-users', element: <Allusers/> },
       { path: 'vehicalType', element: <VehicalTypeAdd /> },
+      { path: 'today-booking', element: <TodayBookings /> },
     ]
   },
 

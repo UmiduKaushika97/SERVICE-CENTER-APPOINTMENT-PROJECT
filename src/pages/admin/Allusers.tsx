@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useUsers } from "../../Hooks/useUsers"
+import Cardview from "./Cardview/Cardview";
 
 const Allusers = () => {
 
@@ -27,6 +28,9 @@ const ITEMS_PER_PAGE = 5;
 
   return (
     <>
+
+    <Cardview/>
+
     <div className="p-4">
         {/* Search Input */}
       <input
