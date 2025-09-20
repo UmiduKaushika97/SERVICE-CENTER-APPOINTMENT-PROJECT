@@ -3,6 +3,8 @@ import { LuLayoutDashboard } from "react-icons/lu"
 import MenuItem from './MenuItem'
 import { RiArrowLeftWideFill, RiArrowRightWideFill } from 'react-icons/ri'
 import { menuItems } from '../../constants'
+import { getAuth, signOut, } from "firebase/auth";
+import { useNavigate } from 'react-router-dom'
 
 interface SidebarProps {
   isOpen?: boolean;
@@ -10,6 +12,23 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({isOpen, toggleSidebar}) => {
+
+  const auth = getAuth();
+    const navigate = useNavigate();
+
+
+ const handleLogout = async () => {
+
+    try {
+      await signOut(auth);
+      localStorage.removeItem("authUser");
+
+      navigate("/UserLogin"); 
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+
   return (
     <div className={`fixed left-0 top-0 h-full bg-black
      text-white transition-all z-50 flex flex-col duration-300  dark:bg-black
@@ -31,7 +50,10 @@ const Sidebar: React.FC<SidebarProps> = ({isOpen, toggleSidebar}) => {
             Icon={item.icon} 
             name={item.name}
             path={item.path}
-            isOpen={isOpen ?? false}/>
+            isOpen={isOpen ?? false}
+            isLogout={item.isLogout}
+            onLogout={handleLogout}
+            />
           ))
         }
 

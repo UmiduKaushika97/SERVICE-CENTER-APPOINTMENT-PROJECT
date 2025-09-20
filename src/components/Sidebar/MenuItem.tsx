@@ -7,17 +7,40 @@ interface MenuItemProps {
   name: string;
   isOpen: boolean;
   path?: string;
+
+  isLogout?: boolean;
+  onLogout?: () => void;
 }
 
-const MenuItem: React.FC<MenuItemProps> = ({ Icon, name, isOpen, path = "/"}) => {
-  return (
+const MenuItem: React.FC<MenuItemProps> = ({ Icon, name, isOpen, path = "/", isLogout, onLogout }) => {
+   
 //     <div className='m-2 flex cursor-pointer items-center space-x-4 rounded-md px-4 py-3
 //     text-gray-400 duration-500 hover:bg-teal-700 hover:text-white'>
 //       <Icon className='text-xl' />
 // {isOpen && <span className='text-[14px] 
 // overflow-hidden'>{name}</span>}
 //     </div>
+if (isLogout) {
+  return (
+<NavLink
+      to="#"   // dummy path, prevents navigation
+      onClick={(e) => {
+        e.preventDefault(); // stop navigation
+        onLogout?.();       // call logout
+      }}
+      className={() =>
+        `m-2 flex cursor-pointer items-center space-x-4 rounded-md px-4 py-3
+        text-gray-400 duration-500 hover:bg-red-700 hover:text-white
+         
+        }`
+      }
+    >
+      <Icon className="text-xl" />
+      {isOpen && <span className="text-[14px] overflow-hidden">{name}</span>}
+    </NavLink>
+  );}
 
+  return (
    <NavLink 
    to={path}
    className={({ isActive }) => `m-2 flex cursor-pointer items-center space-x-4 rounded-md px-4 py-3

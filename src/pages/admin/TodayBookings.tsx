@@ -1,47 +1,111 @@
 
+import { useState } from "react";
 import { useTodayBookings } from "../../Hooks/useTodayBookings";
+import Cardview from "./Cardview/Cardview";
 
 const TodayBookings = () => {
 
-     const { data: todayBookings, isLoading, isError } = useTodayBookings();
+  const ITEMS_PER_PAGE = 5;
 
-  if (isLoading) return <p>Loading today's bookings...</p>;
-  if (isError) return <p>Failed to load bookings.</p>;
-  if (!todayBookings || todayBookings.length === 0) return <p>No todayBookings for today.</p>;
+  // const { data: todayBookings, isLoading } = useTodayBookings();
+  // export default function BookingsTable() {
+    const { data: todayBookings = [], isLoading } = useTodayBookings();
+    const [search, setSearch] = useState("");
+    const [page, setPage] = useState(1);
+  
+    // Filter bookings by email or mobile
+    const filtered = todayBookings.filter((b) =>
+    (b.email || "").toLowerCase().includes(search.toLowerCase()) ||
+    String(b.mobile || "").toLowerCase().includes(search.toLowerCase())
+  );
+  
+    // Pagination logic
+    const start = (page - 1) * ITEMS_PER_PAGE;
+    const paginated = filtered.slice(start, start + ITEMS_PER_PAGE);
+    const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+  
+    if (isLoading) return <p className="text-center py-4">Loading...</p>;
 
-  const bookingCount = todayBookings?.length || 0;
+    
   return (
     <>
-    {/* Booking count */}
-      <h2 className="text-xl font-bold mb-4">
-        Today's Bookings: {bookingCount}
-      </h2>
     
-    <div className="overflow-x-auto">
-      <table className="min-w-full border border-gray-300">
-        <thead>
-          <tr className="bg-gray-100">
-            <th className="p-2 border">Name</th>
-            <th className="p-2 border">Email</th>
-            <th className="p-2 border">Phone</th>
-            <th className="p-2 border">Booking Date</th>
-            <th className="p-2 border">Booking Date</th>
-            <th className="p-2 border">Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {todayBookings.map((booking) => (
-            <tr key={booking.id} className="text-center">
-              <td className="p-2 border">{booking.fullName}</td>
-              <td className="p-2 border">{booking.email}</td>
-              <td className="p-2 border">{booking.mobile || "-"}</td>
-              <td className="p-2 border">{booking.bookingDate}</td>
-              <td className="p-2 border">{booking.createdAt?.toDate().toLocaleString()}</td>
-              <td className="p-2 border">{booking.status}</td>
+    <Cardview/>
+
+    <div className="p-4">
+        {/* Search Input */}
+      <input
+        type="text"
+        placeholder="Search by email or phone..."
+        className="mb-4 w-full p-2 border rounded-md"
+        value={search}
+        onChange={(e) => {
+          setSearch(e.target.value);
+          setPage(1); // reset page on search
+        }}
+      />
+
+      {/* Table */}
+     <div className="overflow-x-auto">
+        <table className="w-full text-sm text-left border">
+          <thead className="bg-gray-100 text-gray-600">
+            <tr>
+              <th className="p-2 border">Name</th>
+              <th className="p-2 border">Email</th>
+              <th className="p-2 border">Mobile</th>
+              <th className="p-2 border">Booking Date</th>
+              <th className="p-2 border">Create Date</th>
+              <th className="p-2 border">Status</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {paginated.map((b) => (
+              <tr key={b.id} className="hover:bg-gray-50">
+                <td className="p-2 border">{b.fullName}</td>
+                <td className="p-2 border">{b.email}</td>
+                <td className="p-2 border">{b.mobile}</td>
+                {/* <td className="p-2 border">
+                  {b.vehicleType} - {b.vehicleNumber}
+                </td> */}
+                <td className="p-2 border">{b.bookingDate}</td>
+                <td className="p-2 border">{b.createdAt?.toDate().toLocaleString()}</td>
+                <td className="p-2 border">{b.status}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Pagination */}
+      <div className="flex justify-center mt-4 space-x-2">
+        <button
+          disabled={page === 1}
+          onClick={() => setPage((p) => p - 1)}
+          className="px-3 py-1 border rounded disabled:opacity-50"
+        >
+          Prev
+        </button>
+
+        {Array.from({ length: totalPages }).map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setPage(i + 1)}
+            className={`px-3 py-1 border rounded ${
+              page === i + 1 ? "bg-blue-500 text-white" : ""
+            }`}
+          >
+            {i + 1}
+          </button>
+        ))}
+
+        <button
+          disabled={page === totalPages}
+          onClick={() => setPage((p) => p + 1)}
+          className="px-3 py-1 border rounded disabled:opacity-50"
+        >
+          Next
+        </button>
+      </div>
     </div>
     </>
   );

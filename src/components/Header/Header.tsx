@@ -16,7 +16,7 @@ const Header = () => {
     <div className='flex items-center gap-3'>
         <FaUser className='rounded-md bg-slate-200 p-0 
         text-2xl dark:bg-slate-600 dark:text-slate-300'/>
-        <h2>John Cena</h2>
+        <h2>John Cena hggggggggggggggggyyg</h2>
     </div>
     </div>
     </>

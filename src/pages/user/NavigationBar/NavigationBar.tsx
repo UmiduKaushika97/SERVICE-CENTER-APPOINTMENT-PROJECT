@@ -210,39 +210,45 @@ const dropdownRef = useRef<HTMLDivElement>(null);
         {isOpen && (
           <div className="md:hidden bg-white shadow-lg">
             <div className="flex flex-col space-y-4 p-4">
-              <a href="#" className="text-red-600 font-bold hover:text-red-700">
+              <Link to="/" className="text-black font-bold hover:text-red-700">
                 HOME
-              </a>
-              <a
-                href="#"
+              </Link>
+
+{/* <Link to="/" className="text-black font-semibold hover:text-red-600">
+                HOME
+               </Link> */}
+
+              <Link
+                to="/Aboutus"
                 className="text-black font-semibold hover:text-red-600"
               >
                 ABOUT US
-              </a>
+              </Link>
+
               <a
                 href="#"
                 className="text-black font-semibold hover:text-red-600"
               >
                 SERVICES
               </a>
-              <a
+              {/* <a
                 href="#"
                 className="text-black font-semibold hover:text-red-600"
               >
                 BRANCHES
-              </a>
-              <a
+              </a> */}
+              {/* <a
                 href="#"
                 className="text-black font-semibold hover:text-red-600"
               >
                 PACKAGES
-              </a>
-              <a
+              </a> */}
+              {/* <a
                 href="#"
                 className="text-black font-semibold hover:text-red-600"
               >
                 NEWS
-              </a>
+              </a> */}
               <a
                 href="#"
                 className="text-black font-semibold hover:text-red-600"
