@@ -1,4 +1,4 @@
-import { collection, query, where, getDocs, doc, setDoc, orderBy, Timestamp } from "firebase/firestore";
+import { collection, query, where, getDocs, doc, setDoc, orderBy, Timestamp, deleteDoc } from "firebase/firestore";
 // addDoc, 9/20/2025 added for timestap
 import { db } from "../firebaseConfig"; // your firebase config file
 
@@ -80,6 +80,37 @@ export const getTodayBookings = async (): Promise<getTodayWithId[]> => {
   return snapshot.docs.map(
     (doc) => ({id: doc.id, ...doc.data() }as getTodayWithId),
   );
+};
+
+
+// AppointmentData
+
+export type getWithId = AppointmentData & { id: string , createdAt: string };
+
+export const getUserBookings = async (userId: string): Promise<getWithId[]> => {
+  try {
+    const q = query(bookingsCollection,
+    where("userId", "==", userId));
+    const snapshot = await getDocs(q);
+
+    return snapshot.docs.map(
+      (doc) => ({id: doc.id, ...doc.data() } as getWithId),
+      );
+    }
+   catch (error) {
+    console.error("Error fetching user bookings:", error);
+    return [];
+  }
+};
+
+
+export const cancelBooking = async (bookingId: string): Promise<void> => {
+  try {
+    await deleteDoc(doc(bookingsCollection, bookingId));
+  } catch (error) {
+    console.error("Error canceling booking:", error);
+    throw error;
+  }
 };
 
 

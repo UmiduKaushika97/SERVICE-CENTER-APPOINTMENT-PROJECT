@@ -64,6 +64,8 @@ const Appointments = () => {
   const [userId, setUserId] = useState<string | null>(null);
   console.log("adawdw",userId);
 
+  
+
   useEffect(() => {
     const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, async (user) => {

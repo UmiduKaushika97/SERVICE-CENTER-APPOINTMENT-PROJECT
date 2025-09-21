@@ -22,6 +22,7 @@ export const usermenuItems = [
   {
     icon: FaCog,
     name: "Settings",
+    path: "/UserLayout/UserBookings"
   },
   {
     icon: FaEnvelope,

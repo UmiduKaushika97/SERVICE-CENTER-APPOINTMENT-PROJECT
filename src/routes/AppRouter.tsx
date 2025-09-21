@@ -26,6 +26,7 @@ import ProtectedRoute from './ProtectedRoute'
 import Unauthorized from '../Unauthorized/UnauthorizedPage'
 import Allusers from '../pages/admin/Allusers'
 import TodayBookings from '../pages/admin/TodayBookings'
+import UserBookings from '../pages/user/UserProfile/UserBooking'
 
 
 const router = createBrowserRouter([
@@ -80,10 +81,11 @@ const router = createBrowserRouter([
     <UserLayout />
     </ProtectedRoute>,
     children: [
-      {
-        path: "UserProfile", element: <UserProfile/>
+      
+       {path: "UserProfile", element: <UserProfile/>},
+       {path: "UserBookings", element: <UserBookings/>} 
         
-      }
+      
     ]
   },
 
