@@ -13,6 +13,7 @@ import {
 import DropDown from "../../../components/DropDown";
 
 import { getBookedSlots, bookSlot } from "../../../services/bookingServices";
+import CheckBox from "../../../components/CheckBox";
 
 const timeSlots = [
   "9-10",
@@ -36,27 +37,29 @@ interface AppointmentFormValues {
   vehicleNumber: string;
   bookingDate: string;
   timeSlot: string;
-  mainService: string;
+  mainService: boolean;
+  additionalServices: string[];
   status: "Active";
 }
 
-
 const validationSchema = Yup.object({
   email: Yup.string().email("Invalid email").required("Email is required"),
-  fullName: Yup.string().min(3, "At least 3 characters").required("Full name is required"),
+  fullName: Yup.string()
+    .min(3, "At least 3 characters")
+    .required("Full name is required"),
   homeAddress: Yup.string().required("Home address is required"),
   mobile: Yup.string()
     .matches(/^[0-9]{10}$/, "Mobile must be 10 digits")
     .required("Mobile is required"),
-  mobileOP: Yup.string().nullable(),
+   
+  mobileOP: Yup.string().nullable()
+   .matches(/^[0-9]{10}$/, "Mobile must be 10 digits"),
   vehicleType: Yup.string().required("Vehicle type is required"),
   vehicleNumber: Yup.string().required("Vehicle number is required"),
-  bookingDate: Yup.string().required("Date is required"),
-  timeSlot: Yup.string().required("Time slot is required"),
-  mainService: Yup.string().required("Main service is required"),
+  // bookingDate: Yup.string().required("Date is required"),
+  // timeSlot: Yup.string().required("Time slot is required"),
+  mainService: Yup.boolean().oneOf([true], "Main service is required"),
 });
-
-
 
 const Appointments = () => {
   const [vehicles, setVehicles] = useState<LogUserVehicle[]>([]);
@@ -77,17 +80,13 @@ const Appointments = () => {
     vehicleNumber: "",
     bookingDate: "",
     timeSlot: "",
-    mainService: "",
+    mainService: false,
+    additionalServices: [],
     status: "Active",
   });
 
-
-  
-
   const [userId, setUserId] = useState<string | null>(null);
-  console.log("adawdw",userId);
-
-  
+  console.log("adawdw", userId);
 
   useEffect(() => {
     const auth = getAuth();
@@ -108,7 +107,8 @@ const Appointments = () => {
             vehicleNumber: "",
             bookingDate: "",
             timeSlot: "",
-            mainService: "",
+            mainService: false,
+            additionalServices: [],
             status: "Active",
             //
           });
@@ -157,7 +157,7 @@ const Appointments = () => {
     handleBlur,
     handleChange,
     setFieldValue,
-    // resetForm,
+    resetForm,
   } = useFormik({
     initialValues,
     enableReinitialize: true,
@@ -232,6 +232,23 @@ const Appointments = () => {
     });
   };
 
+  const handleAdditionalServiceChange = (
+    service: string,
+    isChecked: boolean
+  ) => {
+    if (isChecked) {
+      setFieldValue("additionalServices", [
+        ...values.additionalServices,
+        service,
+      ]);
+    } else {
+      setFieldValue(
+        "additionalServices",
+        values.additionalServices.filter((s) => s !== service)
+      );
+    }
+  };
+
   const handleBooking = async () => {
     if (!selectedSlot || !selectedDate) return alert("Select date & time slot");
     if (!userId) return alert("User not logged in");
@@ -240,30 +257,36 @@ const Appointments = () => {
     // fetchBookedSlots(selectedDate); // refresh slots
 
     try {
-    const appointmentData = {
-      userId,
-      email: values.email,
-      fullName: values.fullName,
-      homeAddress: values.homeAddress,
-      mobile: values.mobile,
-      mobileOP: values.mobileOP,
-      vehicleType: values.vehicleType,
-      vehicleNumber: values.vehicleNumber,
-      bookingDate: selectedDate,
-      timeSlot: selectedSlot,
-      mainService: values.mainService,
-      status: "Active",
-    };
+      const appointmentData = {
+        userId,
+        email: values.email,
+        fullName: values.fullName,
+        homeAddress: values.homeAddress,
+        mobile: values.mobile,
+        mobileOP: values.mobileOP,
+        vehicleType: values.vehicleType,
+        vehicleNumber: values.vehicleNumber,
+        bookingDate: selectedDate,
+        timeSlot: selectedSlot,
+        mainService: values.mainService,
+        additionalServices: values.additionalServices,
+        status: "Active",
+      };
 
-    await bookSlot(appointmentData);
+      await bookSlot(appointmentData);
 
-    toast.success(`Booked ${selectedSlot} on ${selectedDate}`);
-    fetchBookedSlots(selectedDate); // refresh slots
+      toast.success(`Booked ${selectedSlot} on ${selectedDate}`);
+      fetchBookedSlots(selectedDate); // refresh slots
+
+       resetForm(); 
+
+       setSelectedDate(""); // reset date
+       setSelectedSlot(""); // reset selected slot
 
     } catch (err) {
-    console.error("Booking failed:", err);
-    toast.error("Failed to book appointment");
-  }
+      console.error("Booking failed:", err);
+      toast.error("Failed to book appointment");
+    }
   };
 
   return (
@@ -338,7 +361,7 @@ const Appointments = () => {
                 </label>
                 <TextInput
                   type="email"
-                  name="Mobile"
+                  name="mobile"
                   // id="email"
                   className="bg-[white] border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-brightColor focus:border-brightColor block w-full transition-all duration-200 shadow-sm"
                   placeholder="Email address"
@@ -362,15 +385,15 @@ const Appointments = () => {
                 </label>
                 <TextInput
                   type="text"
-                  name="mobileOptional"
+                  name="mobileOP"
                   // id="email"
                   className="bg-[white] border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-brightColor focus:border-brightColor block w-full transition-all duration-200 shadow-sm"
                   placeholder="Mobile"
-                   value={values.mobileOP}
-                  //  onChange={handleChange}
-                  //   onBlur={handleBlur}
-                  //   error={errors.email}
-                  //   touched={touched.email}
+                  value={values.mobileOP}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                    error={errors.mobileOP}
+                    touched={touched.mobileOP}
                   // required
                 />
               </div>
@@ -392,9 +415,9 @@ const Appointments = () => {
                   placeholder="Email address"
                   //  value={values.email}
                   //  onChange={handleChange}
-                    // onBlur={handleBlur}
-                    // error={errors.vehicleType}
-                    // touched={touched.vehicleType}
+                  // onBlur={handleBlur}
+                  // error={errors.vehicleType}
+                  // touched={touched.vehicleType}
                   // required
                   onChange={(value: string) =>
                     setFieldValue("vehicleType", value)
@@ -410,7 +433,7 @@ const Appointments = () => {
                   htmlFor="Phone Number"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Vehicle Number
+                  Vehicle Number <span className="text-red-500">*</span>
                 </label>
                 <DropDown
                   //  name="vehicleNumber"
@@ -437,15 +460,15 @@ const Appointments = () => {
                 </label>
                 <TextInput
                   type="date"
-                  name="Mobile"
+                  name="selectedDate"
                   // id="email"
                   className="bg-[white] border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-brightColor focus:border-brightColor block w-full transition-all duration-200 shadow-sm"
                   placeholder="Email address"
                   //  value={values.email}
                   //  onChange={handleChange}
-                    onBlur={handleBlur}
-                    // error={errors.selectedDate}
-                    // touched={touched.email}
+                  onBlur={handleBlur}
+                  // error={errors.selectedDate}
+                  // touched={touched.email}
                   // required
 
                   min={today}
@@ -456,56 +479,56 @@ const Appointments = () => {
               </div>
               <div className=" md:col-span-3 md:mt-5">
                 <div className="flex flex-wrap gap-3">
-                  {selectedDate && (
-                    getBookableSlots(timeSlots, selectedDate).map(
-                      ({ slot, disabled }) => (
-                        <button
-                          type="button"
-                          key={slot}
-                          disabled={disabled || bookedSlots.includes(slot)}
-                          onClick={() => setSelectedSlot(slot)}
-                          className={`p-2 border rounded w-18 h-10 ${
-                            disabled || bookedSlots.includes(slot)
-                              ? "bg-red-600 cursor-not-allowed"
-                              : selectedSlot === slot
-                              ? "bg-green-600 text-white"
-                              : "bg-white"
-                          }`}
-                        >
-                          {slot}
-                        </button>
+                  {
+                    selectedDate &&
+                      getBookableSlots(timeSlots, selectedDate).map(
+                        ({ slot, disabled }) => (
+                          <button
+                            type="button"
+                            key={slot}
+                            disabled={disabled || bookedSlots.includes(slot)}
+                            onClick={() => setSelectedSlot(slot)}
+                            className={`p-2 border rounded w-18 h-10 ${
+                              disabled || bookedSlots.includes(slot)
+                                ? "bg-red-600 cursor-not-allowed"
+                                : selectedSlot === slot
+                                ? "bg-green-600 text-white"
+                                : "bg-white"
+                            }`}
+                          >
+                            {slot}
+                          </button>
+                        )
                       )
-                    )
-                  )
-                  //  : (
-                  //   <p className="text-gray-500 col-span-3 text-center">
-                  //     Please select a date to see available time slots
-                  //   </p>
-                  // )
+                    //  : (
+                    //   <p className="text-gray-500 col-span-3 text-center">
+                    //     Please select a date to see available time slots
+                    //   </p>
+                    // )
                   }
                 </div>
               </div>
             </div>
             <hr className="col-span-4 border border-gray-100 my-5" />
-  
+
             {/* Services */}
             <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mt-4 md:col-span-4">
               {/* Column 1 */}
               <div>
-                <h3 className="font-semibold mb-2">Main Service <span className="text-red-500">*</span></h3>
+                <h3 className="font-semibold mb-2">
+                  Main Service <span className="text-red-500">*</span>
+                </h3>
                 <div className="space-y-2 text-sm text-gray-600">
-                  <label className="flex items-center gap-2">
-                    <input type="checkbox"
-                    value={values.mainService}
+                  {/* <label className="flex items-center gap-2"> */}
+                  <CheckBox
+                    label="Oil Change / Car Wash"
+                    name="mainService"
+                    checked={values.mainService} // true/false
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    // error={errors.mainService}
-                    /> Oil Change / Car Wash
-                  </label>
-                  {/* <label className="flex items-center gap-2">
-                    <input type="checkbox" /> Lube Services
-                  </label> */}
-                  {(errors.mainService && touched.mainService) && errors.mainService}
+                    error={errors.mainService}
+                    touched={touched.mainService}
+                  />
                 </div>
               </div>
 
@@ -513,20 +536,85 @@ const Appointments = () => {
               <div>
                 <h3 className="font-semibold mb-2">Select services</h3>
                 <div className="space-y-2 text-sm text-gray-600">
+                  
                   <label className="flex items-center gap-2">
-                    <input type="checkbox" /> Wash and Grooming 
+                    {/* <input type="checkbox" /> Lube Services */}
+                    <input
+                      type="checkbox"
+                      checked={values.additionalServices.includes(
+                        "Lube Services"
+                      )}
+                      onChange={(e) =>
+                        handleAdditionalServiceChange(
+                          "Lube Services",
+                          e.target.checked
+                        )
+                      }
+                    />
+                    Lube Services
                   </label>
                   <label className="flex items-center gap-2">
-                    <input type="checkbox" /> Lube Services
+                    {/* <input type="checkbox" />  */}
+                    <input
+                      type="checkbox"
+                      checked={values.additionalServices.includes(
+                        "Exterior & Interior Detailing"
+                      )}
+                      onChange={(e) =>
+                        handleAdditionalServiceChange(
+                          "Exterior & Interior Detailing",
+                          e.target.checked
+                        )
+                      }
+                    />
+                    Exterior & Interior Detailing
                   </label>
                   <label className="flex items-center gap-2">
-                    <input type="checkbox" /> Exterior & Interior Detailing
+                    <input
+                      type="checkbox"
+                      checked={values.additionalServices.includes(
+                        "Engine Tune ups"
+                      )}
+                      onChange={(e) =>
+                        handleAdditionalServiceChange(
+                          "Engine Tune ups",
+                          e.target.checked
+                        )
+                      }
+                    />{" "}
+                    Engine Tune ups
                   </label>
+
                   <label className="flex items-center gap-2">
-                    <input type="checkbox" /> Engine Tune ups
+                    <input
+                      type="checkbox"
+                      checked={values.additionalServices.includes(
+                        "Wash and Grooming"
+                      )}
+                      onChange={(e) =>
+                        handleAdditionalServiceChange(
+                          "Wash and Grooming",
+                          e.target.checked
+                        )
+                      }
+                    />{" "}
+                    Wash and Grooming
                   </label>
+
                   <label className="flex items-center gap-2">
-                    <input type="checkbox" /> Wash and Grooming
+                    <input
+                      type="checkbox"
+                      checked={values.additionalServices.includes(
+                        "Undercarriage Degreasing"
+                      )}
+                      onChange={(e) =>
+                        handleAdditionalServiceChange(
+                          "Undercarriage Degreasing",
+                          e.target.checked
+                        )
+                      }
+                    />{" "}
+                    Undercarriage Degreasing
                   </label>
                 </div>
               </div>
@@ -536,19 +624,79 @@ const Appointments = () => {
                 <h3 className="font-semibold mb-2">Select services</h3>
                 <div className="space-y-2 text-sm text-gray-600">
                   <label className="flex items-center gap-2">
-                    <input type="checkbox" /> Windscreean Treatments
+                    <input
+                      type="checkbox"
+                      checked={values.additionalServices.includes(
+                        "Windscreean Treatments"
+                      )}
+                      onChange={(e) =>
+                        handleAdditionalServiceChange(
+                          "Windscreean Treatments",
+                          e.target.checked
+                        )
+                      }
+                    />{" "}
+                    Windscreean Treatments
                   </label>
                   <label className="flex items-center gap-2">
-                    <input type="checkbox" /> Inspection Reports
+                    <input
+                      type="checkbox"
+                      checked={values.additionalServices.includes(
+                        "Inspection Reports"
+                      )}
+                      onChange={(e) =>
+                        handleAdditionalServiceChange(
+                          "Inspection Reports",
+                          e.target.checked
+                        )
+                      }
+                    />{" "}
+                    Inspection Reports
                   </label>
                   <label className="flex items-center gap-2">
-                    <input type="checkbox" /> Part Replacements
+                    <input
+                      type="checkbox"
+                      checked={values.additionalServices.includes(
+                        "Part Replacements"
+                      )}
+                      onChange={(e) =>
+                        handleAdditionalServiceChange(
+                          "Part Replacements",
+                          e.target.checked
+                        )
+                      }
+                    />{" "}
+                    Part Replacements
                   </label>
                   <label className="flex items-center gap-2">
-                    <input type="checkbox" /> Wheel Alignment
+                    <input
+                      type="checkbox"
+                      checked={values.additionalServices.includes(
+                        "Wheel Alignment"
+                      )}
+                      onChange={(e) =>
+                        handleAdditionalServiceChange(
+                          "Wheel Alignment",
+                          e.target.checked
+                        )
+                      }
+                    />{" "}
+                    Wheel Alignment
                   </label>
                   <label className="flex items-center gap-2">
-                    <input type="checkbox" /> Nano Treatments
+                    <input
+                      type="checkbox"
+                      checked={values.additionalServices.includes(
+                        "Nano Treatments"
+                      )}
+                      onChange={(e) =>
+                        handleAdditionalServiceChange(
+                          "Nano Treatments",
+                          e.target.checked
+                        )
+                      }
+                    />{" "}
+                    Nano Treatments
                   </label>
                 </div>
               </div>
@@ -558,19 +706,68 @@ const Appointments = () => {
                 <h3 className="font-semibold mb-2">Select services</h3>
                 <div className="space-y-2 text-sm text-gray-600">
                   <label className="flex items-center gap-2">
-                    <input type="checkbox" /> Mechanical
+                    <input
+                      type="checkbox"
+                      checked={values.additionalServices.includes("Mechanical")}
+                      onChange={(e) =>
+                        handleAdditionalServiceChange(
+                          "Mechanical",
+                          e.target.checked
+                        )
+                      }
+                    />{" "}
+                    Mechanical
                   </label>
                   <label className="flex items-center gap-2">
-                    <input type="checkbox" /> Detailing
+                    <input
+                      type="checkbox"
+                      checked={values.additionalServices.includes("Detailing")}
+                      onChange={(e) =>
+                        handleAdditionalServiceChange(
+                          "Detailing",
+                          e.target.checked
+                        )
+                      }
+                    />{" "}
+                    Detailing
                   </label>
                   <label className="flex items-center gap-2">
-                    <input type="checkbox" /> Full Paints
+                    <input
+                      type="checkbox"
+                      checked={values.additionalServices.includes(
+                        "Full Paints"
+                      )}
+                      onChange={(e) =>
+                        handleAdditionalServiceChange(
+                          "Full Paints",
+                          e.target.checked
+                        )
+                      }
+                    />{" "}
+                    Full Paints
                   </label>
                   <label className="flex items-center gap-2">
-                    <input type="checkbox" /> Body Shop
+                    <input
+                      type="checkbox"
+                      checked={values.additionalServices.includes("Body Shop")}
+                      onChange={(e) =>
+                        handleAdditionalServiceChange(
+                          "Body Shop",
+                          e.target.checked
+                        )
+                      }
+                    />{" "}
+                    Body Shop
                   </label>
                   <label className="flex items-center gap-2">
-                    <input type="checkbox" /> Other
+                    <input
+                      type="checkbox"
+                      checked={values.additionalServices.includes("Other")}
+                      onChange={(e) =>
+                        handleAdditionalServiceChange("Other", e.target.checked)
+                      }
+                    />{" "}
+                    Other
                   </label>
                 </div>
               </div>
@@ -581,11 +778,12 @@ const Appointments = () => {
               <button
                 type="submit"
                 // className="px-6 py-2 bg-indigo-600 text-white rounded-md shadow hover:bg-indigo-700 transition"
-                disabled={!selectedSlot || !selectedDate} // disable if nothing selected
+        
+                disabled={!selectedSlot || !selectedDate} 
                 className={`p-2 rounded w-full ${
                   !selectedSlot || !selectedDate
                     ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-green-500 text-white"
+                    : "bg-black text-white"
                 }`}
               >
                 Reserve Appointment
