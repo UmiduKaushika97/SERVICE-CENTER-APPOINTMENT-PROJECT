@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import TextInput from "../../../components/TextInput";
 import NavigationBar from "../NavigationBar/NavigationBar";
 import { useFormik } from "formik";
-// import * as Yup from "yup";
+import * as Yup from "yup";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { toast } from "react-toastify";
 import { getUserDetails } from "../../../services/usersServices";
@@ -36,8 +36,27 @@ interface AppointmentFormValues {
   vehicleNumber: string;
   bookingDate: string;
   timeSlot: string;
+  mainService: string;
   status: "Active";
 }
+
+
+const validationSchema = Yup.object({
+  email: Yup.string().email("Invalid email").required("Email is required"),
+  fullName: Yup.string().min(3, "At least 3 characters").required("Full name is required"),
+  homeAddress: Yup.string().required("Home address is required"),
+  mobile: Yup.string()
+    .matches(/^[0-9]{10}$/, "Mobile must be 10 digits")
+    .required("Mobile is required"),
+  mobileOP: Yup.string().nullable(),
+  vehicleType: Yup.string().required("Vehicle type is required"),
+  vehicleNumber: Yup.string().required("Vehicle number is required"),
+  bookingDate: Yup.string().required("Date is required"),
+  timeSlot: Yup.string().required("Time slot is required"),
+  mainService: Yup.string().required("Main service is required"),
+});
+
+
 
 const Appointments = () => {
   const [vehicles, setVehicles] = useState<LogUserVehicle[]>([]);
@@ -58,8 +77,12 @@ const Appointments = () => {
     vehicleNumber: "",
     bookingDate: "",
     timeSlot: "",
+    mainService: "",
     status: "Active",
   });
+
+
+  
 
   const [userId, setUserId] = useState<string | null>(null);
   console.log("adawdw",userId);
@@ -85,6 +108,7 @@ const Appointments = () => {
             vehicleNumber: "",
             bookingDate: "",
             timeSlot: "",
+            mainService: "",
             status: "Active",
             //
           });
@@ -127,6 +151,8 @@ const Appointments = () => {
 
   const {
     values,
+    errors,
+    touched,
     handleSubmit,
     handleBlur,
     handleChange,
@@ -135,6 +161,7 @@ const Appointments = () => {
   } = useFormik({
     initialValues,
     enableReinitialize: true,
+    validationSchema,
     onSubmit: (values) => {
       console.log("form values", values);
       handleBooking();
@@ -224,6 +251,7 @@ const Appointments = () => {
       vehicleNumber: values.vehicleNumber,
       bookingDate: selectedDate,
       timeSlot: selectedSlot,
+      mainService: values.mainService,
       status: "Active",
     };
 
@@ -269,8 +297,8 @@ const Appointments = () => {
                   value={values.email}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  // error={errors.email}
-                  // touched={touched.email}
+                  error={errors.email}
+                  touched={touched.email}
                   // required
                   disabled={true}
                 />
@@ -293,8 +321,8 @@ const Appointments = () => {
                   value={values.fullName}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  // error={errors.email}
-                  // touched={touched.email}
+                  error={errors.fullName}
+                  touched={touched.fullName}
                   // required
                   disabled={true}
                 />
@@ -317,8 +345,8 @@ const Appointments = () => {
                   value={values.mobile}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  // error={errors.mobile}
-                  // touched={touched.mobile}
+                  error={errors.mobile}
+                  touched={touched.mobile}
                   disabled={true}
                   // required
                 />
@@ -338,7 +366,7 @@ const Appointments = () => {
                   // id="email"
                   className="bg-[white] border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-brightColor focus:border-brightColor block w-full transition-all duration-200 shadow-sm"
                   placeholder="Mobile"
-                  //  value={values.email}
+                   value={values.mobileOP}
                   //  onChange={handleChange}
                   //   onBlur={handleBlur}
                   //   error={errors.email}
@@ -364,16 +392,16 @@ const Appointments = () => {
                   placeholder="Email address"
                   //  value={values.email}
                   //  onChange={handleChange}
-                  //   onBlur={handleBlur}
-                  //   error={errors.email}
-                  //   touched={touched.email}
+                    // onBlur={handleBlur}
+                    // error={errors.vehicleType}
+                    // touched={touched.vehicleType}
                   // required
                   onChange={(value: string) =>
                     setFieldValue("vehicleType", value)
                   }
-                  // onBlur={handleBlur}
-                  // error={errors.vehicleType}
-                  // touched={touched.vehicleType}
+                  onBlur={handleBlur}
+                  error={errors.vehicleType}
+                  touched={touched.vehicleType}
                 />
               </div>
               {/* Full Name block */}
@@ -391,9 +419,9 @@ const Appointments = () => {
                   onChange={(value: string) =>
                     setFieldValue("vehicleNumber", value)
                   }
-                  // onBlur={handleBlur}
-                  // error={errors.vehicleNumber}
-                  // touched={touched.vehicleNumber}
+                  onBlur={handleBlur}
+                  error={errors.vehicleNumber}
+                  touched={touched.vehicleNumber}
                 />
               </div>
             </div>
@@ -415,9 +443,9 @@ const Appointments = () => {
                   placeholder="Email address"
                   //  value={values.email}
                   //  onChange={handleChange}
-                  //   onBlur={handleBlur}
-                  //   error={errors.email}
-                  //   touched={touched.email}
+                    onBlur={handleBlur}
+                    // error={errors.selectedDate}
+                    // touched={touched.email}
                   // required
 
                   min={today}
@@ -464,14 +492,20 @@ const Appointments = () => {
             <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mt-4 md:col-span-4">
               {/* Column 1 */}
               <div>
-                <h3 className="font-semibold mb-2">Select services</h3>
+                <h3 className="font-semibold mb-2">Main Service <span className="text-red-500">*</span></h3>
                 <div className="space-y-2 text-sm text-gray-600">
                   <label className="flex items-center gap-2">
-                    <input type="checkbox" /> Wash and Grooming
+                    <input type="checkbox"
+                    value={values.mainService}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    // error={errors.mainService}
+                    /> Oil Change / Car Wash
                   </label>
-                  <label className="flex items-center gap-2">
+                  {/* <label className="flex items-center gap-2">
                     <input type="checkbox" /> Lube Services
-                  </label>
+                  </label> */}
+                  {(errors.mainService && touched.mainService) && errors.mainService}
                 </div>
               </div>
 
@@ -480,10 +514,19 @@ const Appointments = () => {
                 <h3 className="font-semibold mb-2">Select services</h3>
                 <div className="space-y-2 text-sm text-gray-600">
                   <label className="flex items-center gap-2">
-                    <input type="checkbox" /> Undercarriage Degreasing
+                    <input type="checkbox" /> Wash and Grooming 
                   </label>
                   <label className="flex items-center gap-2">
-                    <input type="checkbox" /> Windscreen Treatments
+                    <input type="checkbox" /> Lube Services
+                  </label>
+                  <label className="flex items-center gap-2">
+                    <input type="checkbox" /> Exterior & Interior Detailing
+                  </label>
+                  <label className="flex items-center gap-2">
+                    <input type="checkbox" /> Engine Tune ups
+                  </label>
+                  <label className="flex items-center gap-2">
+                    <input type="checkbox" /> Wash and Grooming
                   </label>
                 </div>
               </div>
@@ -493,10 +536,19 @@ const Appointments = () => {
                 <h3 className="font-semibold mb-2">Select services</h3>
                 <div className="space-y-2 text-sm text-gray-600">
                   <label className="flex items-center gap-2">
-                    <input type="checkbox" /> Hybrid Services
+                    <input type="checkbox" /> Windscreean Treatments
+                  </label>
+                  <label className="flex items-center gap-2">
+                    <input type="checkbox" /> Inspection Reports
+                  </label>
+                  <label className="flex items-center gap-2">
+                    <input type="checkbox" /> Part Replacements
                   </label>
                   <label className="flex items-center gap-2">
                     <input type="checkbox" /> Wheel Alignment
+                  </label>
+                  <label className="flex items-center gap-2">
+                    <input type="checkbox" /> Nano Treatments
                   </label>
                 </div>
               </div>
@@ -510,6 +562,15 @@ const Appointments = () => {
                   </label>
                   <label className="flex items-center gap-2">
                     <input type="checkbox" /> Detailing
+                  </label>
+                  <label className="flex items-center gap-2">
+                    <input type="checkbox" /> Full Paints
+                  </label>
+                  <label className="flex items-center gap-2">
+                    <input type="checkbox" /> Body Shop
+                  </label>
+                  <label className="flex items-center gap-2">
+                    <input type="checkbox" /> Other
                   </label>
                 </div>
               </div>

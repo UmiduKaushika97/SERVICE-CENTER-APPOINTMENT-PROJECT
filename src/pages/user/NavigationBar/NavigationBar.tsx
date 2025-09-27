@@ -109,12 +109,17 @@ const dropdownRef = useRef<HTMLDivElement>(null);
                <Link to="/Aboutus" className="text-black font-semibold hover:text-red-600">
                 ABOUT US
                </Link>
-              <a
+
+               
+               <Link to="/ServicePackages" className="text-black font-semibold hover:text-red-600">
+                SERVICE PACKAGES
+               </Link>
+              {/* <a
                 href="#"
                 className="text-black font-semibold hover:text-red-600"
               >
                 SERVICES
-              </a>
+              </a> */}
               {/* <a
                 href="#"
                 className="text-black font-semibold hover:text-red-600"

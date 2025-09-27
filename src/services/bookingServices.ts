@@ -29,6 +29,7 @@ interface AppointmentData {
   bookingDate: string;
   timeSlot: string;
   createdAt?: Timestamp; // Firestore timestamp 9/20/2025 added for toDate
+  mainService: string,
   status: string;
 }
 

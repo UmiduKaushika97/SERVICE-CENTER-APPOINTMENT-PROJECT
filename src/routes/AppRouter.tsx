@@ -27,6 +27,7 @@ import Unauthorized from '../Unauthorized/UnauthorizedPage'
 import Allusers from '../pages/admin/Allusers'
 import TodayBookings from '../pages/admin/TodayBookings'
 import UserBookings from '../pages/user/UserProfile/UserBooking'
+import ServicePackages from '../pages/user/ServicePackages/ServicePackages'
 
 
 const router = createBrowserRouter([
@@ -67,6 +68,11 @@ const router = createBrowserRouter([
   {
     path: '/Aboutus',
     element: <AboutUs />
+  },
+
+  {
+    path: '/ServicePackages',
+    element: <ServicePackages />
   },
 
   // {

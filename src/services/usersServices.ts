@@ -168,7 +168,7 @@ export const registerUser = async (data: UserData): Promise<UserCredential> => {
     Uid: userCredential.user.uid,
   });
 
-  await fetch('https://carepoint-305975590103.asia-southeast1.run.app/api/users/setRole', {
+  await fetch('https://carepoint-app-333827722293.asia-southeast1.run.app/api/users/setRole', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ uid:userCredential.user.uid, userType: 'User' }) // default role
