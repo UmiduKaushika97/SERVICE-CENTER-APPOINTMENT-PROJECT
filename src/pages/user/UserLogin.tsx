@@ -101,7 +101,7 @@ const UserLogin = () => {
             <Button
               className="bg-red-700 w-[110px] h-[35px] text-black text-[0.7rem] lg:w-[130px] lg:h-[41px] 
               lg:text-[0.8rem]  font-semibold border-2 border-white rounded-full transition-colors duration-300 
-              hover:bg-white hover:text-blue-600" 
+              hover:bg-black hover:text-white" 
             //   id="sign-up-btn"
               onClick={toggleSignUpMode}
             
@@ -149,7 +149,7 @@ const UserLogin = () => {
             <Button
              className="bg-red-700 text-black w-[110px] h-[35px]  text-[0.7rem] lg:w-[130px] 
               lg:h-[41px] lg:text-[0.8rem]  font-semibold   border-2 border-white rounded-full 
-              transition-colors duration-300 hover:bg-white hover:text-gray-700"
+              transition-colors duration-300 hover:bg-black hover:text-white"
             //   id="sign-in-btn"
             label='sign in'
               onClick={toggleSignUpMode}
