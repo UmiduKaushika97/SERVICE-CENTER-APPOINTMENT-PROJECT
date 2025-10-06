@@ -75,7 +75,7 @@ const Contactus = () => {
               </div>
               <div>
                 <p className="text-sm font-semibold text-red-600">EMAIL</p>
-                <p className="font-medium text-gray-800">info@automiraj.lk</p>
+                <p className="font-medium text-gray-800">info@carepoint.lk</p>
               </div>
             </div>
           </div>
