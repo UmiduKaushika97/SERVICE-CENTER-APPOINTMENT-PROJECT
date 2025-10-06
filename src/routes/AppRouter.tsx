@@ -28,6 +28,7 @@ import Allusers from '../pages/admin/Allusers'
 import TodayBookings from '../pages/admin/TodayBookings'
 import UserBookings from '../pages/user/UserProfile/UserBooking'
 import ServicePackages from '../pages/user/ServicePackages/ServicePackages'
+import Contactus from '../pages/user/Contactus/Contactus'
 
 
 const router = createBrowserRouter([
@@ -75,6 +76,11 @@ const router = createBrowserRouter([
     element: <ServicePackages />
   },
 
+  {
+    path: '/ContactUs',
+    element: <Contactus />
+  },
+
   // {
   //   path: '/UserProfile',
   //   element: <UserProfile />
@@ -89,6 +95,7 @@ const router = createBrowserRouter([
     children: [
       
        {path: "UserProfile", element: <UserProfile/>},
+       {path: "Appointment",element: <Appointments />},
        {path: "UserBookings", element: <UserBookings/>} 
         
       

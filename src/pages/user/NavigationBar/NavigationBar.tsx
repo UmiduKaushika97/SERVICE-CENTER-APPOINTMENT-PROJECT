@@ -106,14 +106,16 @@ const dropdownRef = useRef<HTMLDivElement>(null);
                 ABOUT US
               </a> */}
 
+              <Link to="/ServicePackages" className="text-black font-semibold hover:text-red-600">
+                SERVICE PACKAGES
+               </Link>
+
                <Link to="/Aboutus" className="text-black font-semibold hover:text-red-600">
                 ABOUT US
                </Link>
 
                
-               <Link to="/ServicePackages" className="text-black font-semibold hover:text-red-600">
-                SERVICE PACKAGES
-               </Link>
+               
               {/* <a
                 href="#"
                 className="text-black font-semibold hover:text-red-600"
@@ -138,12 +140,16 @@ const dropdownRef = useRef<HTMLDivElement>(null);
               >
                 NEWS
               </a> */}
-              <a
+              <Link to="/ContactUs" className="text-black font-semibold hover:text-red-600">
+                CONTACT US
+               </Link>
+              
+              {/* <a
                 href="#"
                 className="text-black font-semibold hover:text-red-600"
               >
                 CONTACT
-              </a>
+              </a> */}
             </div>
 
             {/* Book Now Button (desktop) */}
@@ -174,7 +180,7 @@ const dropdownRef = useRef<HTMLDivElement>(null);
                 <div className="absolute right-0 mt-2 w-30 bg-white border shadow-lg rounded-md py-2">
                   <button
                     className="block w-full text-left px-4 py-2 hover:bg-gray-100"
-                    onClick={() => navigate("/UserLayout")}
+                    onClick={() => navigate("/UserLayout/UserProfile")}
                   >
                     Profile
                   </button>
@@ -223,6 +229,13 @@ const dropdownRef = useRef<HTMLDivElement>(null);
                 HOME
                </Link> */}
 
+               <Link
+                to="/ServicePackages"
+                className="text-black font-semibold hover:text-red-600"
+              >
+                SERVICE PACKAGES
+              </Link>
+
               <Link
                 to="/Aboutus"
                 className="text-black font-semibold hover:text-red-600"
@@ -230,12 +243,7 @@ const dropdownRef = useRef<HTMLDivElement>(null);
                 ABOUT US
               </Link>
 
-              <a
-                href="#"
-                className="text-black font-semibold hover:text-red-600"
-              >
-                SERVICES
-              </a>
+              
               {/* <a
                 href="#"
                 className="text-black font-semibold hover:text-red-600"
@@ -254,12 +262,16 @@ const dropdownRef = useRef<HTMLDivElement>(null);
               >
                 NEWS
               </a> */}
-              <a
+              {/* <a
                 href="#"
                 className="text-black font-semibold hover:text-red-600"
               >
                 CONTACT
-              </a>
+              </a> */}
+
+              <Link to="/ContactUs" className="text-black font-semibold hover:text-red-600">
+                CONTACT US
+               </Link>
               {/* <a
                 href="#"
                 className="bg-red-600 text-white font-bold px-4 py-2 rounded hover:bg-red-700 text-center"
