@@ -105,7 +105,7 @@ const UserLogin = () => {
             //   id="sign-up-btn"
               onClick={toggleSignUpMode}
             
-              label='Sign up1'
+              label='Sign up'
             />
           </div>
 
@@ -145,9 +145,9 @@ const UserLogin = () => {
             <p className=" py-2 text-[0.7rem] lg:text-[0.95rem] px-0  lg:py-[0.7rem]">
               Sign in to your account to have hastle free experience
             </p>
-
+                
             <Button
-             className=" text-gray-700 bg-transparent w-[110px] h-[35px]  text-[0.7rem] lg:w-[130px] 
+             className="bg-red-700 text-black w-[110px] h-[35px]  text-[0.7rem] lg:w-[130px] 
               lg:h-[41px] lg:text-[0.8rem]  font-semibold   border-2 border-white rounded-full 
               transition-colors duration-300 hover:bg-white hover:text-gray-700"
             //   id="sign-in-btn"
