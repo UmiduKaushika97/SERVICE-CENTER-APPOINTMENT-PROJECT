@@ -1,4 +1,9 @@
 import image from "../../../assets/images/service1.jpg"
+import servicelist2 from "../../../assets/images/Servicelist2.jpg"
+import servicelist3 from "../../../assets/images/Servicelist3.jpg"
+import servicelist4 from "../../../assets/images/Servicelist4.jpg"
+import servicelist5 from "../../../assets/images/Servicelist5.jpg"
+import servicelist6 from "../../../assets/images/Servicelist6.jpg"
 import ThreePillers from "../../../assets/images/Three-pillars.png"
 import Carimg from "../../../assets/images/car-service.jpg"
 import NavigationBar from "../NavigationBar/NavigationBar";
@@ -168,33 +173,33 @@ const UsersHome = () => {
           <div className="mt-6 space-y-5">
             {[
               {
-                // logo: "https://via.placeholder.com/180x50?text=Premier",
+                logo: image,
                 text: "Located in Colombo to offer your vehicle a VIP Service.",
               },
               {
-                // logo: "https://via.placeholder.com/180x50?text=Grand",
+                logo: servicelist2,
                 text: "From car wash to body shop & workshop, all under one roof.",
               },
               {
-                // logo: "https://via.placeholder.com/180x50?text=Ramdis",
+                logo: servicelist3,
                 text: "European/other Manufacturer Repairs & Maintenance.",
               },
               {
-                // logo: "https://via.placeholder.com/180x50?text=Express",
+                logo: servicelist4,
                 text: "Quick detailing services with latest steam wash facilities.",
               },
               {
-                // logo: "https://via.placeholder.com/180x50?text=4x4",
+                logo: servicelist5,
                 text: "Extreme off-roading experience in Auto Miraj’s sports rigs.",
               },
               {
-                // logo: "https://via.placeholder.com/180x50?text=Vroom",
+                logo: servicelist6,
                 text: "Your trusted partner in all automotive repair materials.",
               },
             ].map((item, index) => (
               <div key={index} className="flex items-center gap-4">
                 <img
-                  src={image}
+                  src={item.logo}
                   alt="service logo"
                   className="w-40 h-auto object-contain"
                 />
