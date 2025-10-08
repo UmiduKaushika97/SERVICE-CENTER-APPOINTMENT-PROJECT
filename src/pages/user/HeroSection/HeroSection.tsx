@@ -90,7 +90,7 @@ const navigate = useNavigate();
             </button> */}
 
             <Button type="submit" className='bg-red-600 text-white font-bold px-4 py-2 rounded hover:bg-red-700'
-            label='Login'
+            label='Get Started'
             onClick={handleClick}
           />
 
