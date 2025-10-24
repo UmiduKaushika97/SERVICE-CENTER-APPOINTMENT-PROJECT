@@ -291,7 +291,7 @@ const ServicePackages = () => {
 
       <footer className="border-t py-6 mt-8">
         <div className="max-w-6xl mx-auto px-6 text-sm text-gray-600 flex items-center justify-between">
-          <div>© Auto Miraj — All rights reserved</div>
+          <div>© Care Point — All rights reserved</div>
           {/* <div>Designed with ♥ using Tailwind CSS</div> */}
         </div>
       </footer>
